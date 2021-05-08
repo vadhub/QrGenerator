@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QrGenerator</string>
+    <string name="permission_name">Access location</string>
+    <string name="permission_message_body">Access Fine Location</string>
+    <string name="permission_ok">granted</string>
+    <string name="permission_deny">deny</string>
+</resources>
