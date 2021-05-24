@@ -8,4 +8,7 @@
     <string name="text">text</string>
     <string name="link">link</string>
     <string name="location">location</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_phone_number">Enter phone number</string>
 </resources>
