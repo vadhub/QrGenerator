@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,147 +33,54 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.vad.qrscanner.GeneratorQr;
 import com.vad.qrscanner.R;
+import com.vad.qrscanner.fragments.LinksFragmentGeneration;
+import com.vad.qrscanner.fragments.LocationFragmentGeneration;
+import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
+import com.vad.qrscanner.fragments.TextFragmentGeneration;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity{
 
-    private static final int REQUEST_CHECK_SETTINGS = 1209;
-    private static final int REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION = 1331;
-    private ImageView imageViewQr;
-    private String mLocation = "1";
-    GeneratorQr generatorQr = new GeneratorQr();
-    private LocationManager mLocationManager;
-    private ProgressBar progressBar;
+    private BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        imageViewQr = (ImageView) findViewById(R.id.imageViewQr);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
     }
 
-    public void onClickGenerateQr(View view){
-        progressBar.setVisibility(View.VISIBLE);
-        checkPermission();
-    }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
+            Fragment selected = null;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+            switch (item.getItemId()){
+                case R.id.phone_nav:
+                    selected = new PhoneFragmentGeneration();
+                    break;
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                case R.id.text_nav:
+                    selected = new TextFragmentGeneration();
+                    break;
 
-                        if(location!=null){
-                            double lat= location.getLatitude();
-                            double lon= location.getLongitude();
-                            mLocation = lat +", " +lon;
-                            imageViewQr.setImageBitmap(generatorQr.generate(mLocation));
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
+                case R.id.coord_nav:
+                    selected = new LocationFragmentGeneration();
+                    break;
 
-                    }
-                });
-
+                case R.id.links_nav:
+                    selected = new LinksFragmentGeneration();
+                    break;
             }
-        }).start();
 
-        if(mLocationManager!=null){
-            mLocationManager.removeUpdates(this);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected);
+            return true;
         }
-    }
+    };
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-    }
-
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-
-    }
-
-    private void checkPermission() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if ((ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION);
-            }else{
-                displayLocationSettingsRequest(this, MainActivity.this);
-            }
-        }else{
-            mLocationManager.requestLocationUpdates("gps", 5000, 0, this);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_PERMISSION_OVERLAY_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                displayLocationSettingsRequest(this, MainActivity.this);
-            }
-        }
-    }
-
-    private void displayLocationSettingsRequest(Context context, Activity activity) {
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
-                .addApi(LocationServices.API).build();
-        googleApiClient.connect();
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(10000 / 2);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        builder.setAlwaysShow(true);
-
-        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        setLocationSetting();
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        try {
-                            // Show the dialog by calling startResolutionForResult(), and check the result
-                            // in onActivityResult().
-                            status.startResolutionForResult(activity, REQUEST_CHECK_SETTINGS);
-                        } catch (IntentSender.SendIntentException e) {
-                            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Toast.makeText(context, "GPS unable", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
-    }
-
-    @SuppressLint("MissingPermission")
-    private void setLocationSetting(){
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CHECK_SETTINGS){
-            setLocationSetting();
-        }
-    }
 }
