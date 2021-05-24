@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,6 +31,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.vad.qrscanner.GeneratorQr;
+import com.vad.qrscanner.R;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
@@ -39,15 +42,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private String mLocation = "1";
     GeneratorQr generatorQr = new GeneratorQr();
     private LocationManager mLocationManager;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageViewQr = (ImageView) findViewById(R.id.imageViewQr);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
     public void onClickGenerateQr(View view){
+        progressBar.setVisibility(View.VISIBLE);
         checkPermission();
     }
 
@@ -57,13 +63,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(location!=null){
-                    double lat= location.getLatitude();
-                    double lon= location.getLongitude();
-                    mLocation = lat +" " + lon;
-                    Toast.makeText(MainActivity.this, ""+mLocation, Toast.LENGTH_SHORT).show();
-                    imageViewQr.setImageBitmap(generatorQr.generate(mLocation));
-                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if(location!=null){
+                            double lat= location.getLatitude();
+                            double lon= location.getLongitude();
+                            mLocation = lat +", " +lon;
+                            imageViewQr.setImageBitmap(generatorQr.generate(mLocation));
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                    }
+                });
+
             }
         }).start();
 

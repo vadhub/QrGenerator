@@ -1,6 +1,7 @@
 package com.vad.qrscanner;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;

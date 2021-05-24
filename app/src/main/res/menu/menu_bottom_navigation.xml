@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/phone_nav"
+        android:icon="@drawable/ic_baseline_local_phone_24"
+        android:title="@string/phone"
+        />
+
+    <item
+        android:id="@+id/text_nav"
+        android:icon="@drawable/ic_baseline_text_fields_24"
+        android:title="@string/text"
+        />
+
+    <item
+        android:id="@+id/links_nav"
+        android:icon="@drawable/ic_baseline_insert_link_24"
+        android:title="@string/link"
+        />
+
+    <item
+        android:id="@+id/coord_nav"
+        android:icon="@drawable/ic_baseline_edit_location_24"
+        android:title="@string/location"
+        />
+
+
+</menu>

@@ -4,4 +4,8 @@
     <string name="permission_message_body">Access Fine Location</string>
     <string name="permission_ok">granted</string>
     <string name="permission_deny">deny</string>
+    <string name="phone">phone</string>
+    <string name="text">text</string>
+    <string name="link">link</string>
+    <string name="location">location</string>
 </resources>
