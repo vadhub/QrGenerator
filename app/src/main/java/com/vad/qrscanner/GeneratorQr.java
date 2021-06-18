@@ -10,7 +10,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class GeneratorQr {
-    public Bitmap generate(String textToQr){
+    public static Bitmap generate(String textToQr){
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
