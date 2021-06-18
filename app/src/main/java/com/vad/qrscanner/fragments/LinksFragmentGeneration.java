@@ -1,5 +1,6 @@
 package com.vad.qrscanner.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.widget.EditText;
 
 import com.vad.qrscanner.GeneratorQr;
 import com.vad.qrscanner.R;
+import com.vad.qrscanner.result.ResultQrActivity;
 
 
 public class LinksFragmentGeneration extends Fragment {
@@ -32,9 +34,15 @@ public class LinksFragmentGeneration extends Fragment {
             public void onClick(View view) {
                 String str = editTextLink.getText().toString();
                 Bitmap bitmap = GeneratorQr.generate(str);
-                
+                gotoActivity(bitmap);
             }
         });
         return v;
+    }
+
+    private void gotoActivity(Bitmap bitmap){
+        Intent intent = new Intent(getContext(),ResultQrActivity.class);
+        intent.putExtra("bitmap_result", bitmap);
+        getContext().startActivity(intent);
     }
 }
