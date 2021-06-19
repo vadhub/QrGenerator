@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity{
 
         navigationView.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration());
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
             }
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
             return true;
         }
     };
