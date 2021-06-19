@@ -14,12 +14,6 @@
         />
 
     <item
-        android:id="@+id/links_nav"
-        android:icon="@drawable/ic_baseline_insert_link_24"
-        android:title="@string/link"
-        />
-
-    <item
         android:id="@+id/coord_nav"
         android:icon="@drawable/ic_baseline_edit_location_24"
         android:title="@string/location"
