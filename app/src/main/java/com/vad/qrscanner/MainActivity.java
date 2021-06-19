@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity{
 
         navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+        navigationView.setOnNavigationItemSelectedListener(navListener);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration());
     }
 
