@@ -31,6 +31,8 @@ public class ResultQrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_qr);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Save");
 
         ActivityCompat.requestPermissions(ResultQrActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
@@ -51,35 +53,15 @@ public class ResultQrActivity extends AppCompatActivity {
     }
 
     private void saveQr(Bitmap bitmap){
-//        FileOutputStream outputStream = null;
-//        File file = Environment.getExternalStorageDirectory();
-//        File dir = new File(file.getAbsolutePath() + "/QrGenerate");
-//        dir.mkdirs();
-//        String fileName = String.format("%d.jpg", System.currentTimeMillis());
-//        File outFile = new File(dir, fileName);
-//
-//        try {
-//            outputStream = new FileOutputStream(outFile);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-//
-//        try {
-//            outputStream.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            outputStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         String outFile = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
 
         Toast.makeText(this, "Image save to "+outFile, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
