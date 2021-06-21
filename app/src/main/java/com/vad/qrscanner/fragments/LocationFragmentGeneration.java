@@ -1,11 +1,14 @@
 package com.vad.qrscanner.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -13,13 +16,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.vad.qrscanner.MainActivity;
 import com.vad.qrscanner.R;
 
 
 public class LocationFragmentGeneration extends Fragment {
+
+    private static final int STORAGE_PERMISSION_CODE = 1103;
+    private Button btnGenerate;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -29,26 +38,36 @@ public class LocationFragmentGeneration extends Fragment {
                         ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
         ) {
 
+            Toast.makeText(getContext(), "Access location", Toast.LENGTH_SHORT).show();
+            getLastLocation();
+
         } else {
-            requestPermissionLauncher.launch(
-                    Manifest.permission.REQUESTED_PERMISSION);
+            requestLocationPermission();
+
         }
 
     }
 
-    private ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                }
-            });
+    private void requestLocationPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)){
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Permission needed")
+                    .setMessage("Permission needed for get location")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, STORAGE_PERMISSION_CODE);
+                        }
+                    }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create().show();
+        }else{
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, STORAGE_PERMISSION_CODE);
+        }
+    }
 
 
     @Override
@@ -57,7 +76,15 @@ public class LocationFragmentGeneration extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_location_generation, container, false);
         fusedLocationProviderClient = new FusedLocationProviderClient(getContext());
+        btnGenerate = (Button) v.findViewById(R.id.buttonGenerationLocation);
 
+        btnGenerate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermission();
+            }
+        });
+        checkPermission();
         return v;
     }
 
@@ -75,8 +102,15 @@ public class LocationFragmentGeneration extends Fragment {
         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
+
+                if(location!=null){
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+
+                    Toast.makeText(getContext(), ""+lat+" "+lon, Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
     }
