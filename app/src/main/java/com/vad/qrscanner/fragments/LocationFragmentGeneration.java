@@ -2,9 +2,11 @@ package com.vad.qrscanner.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -54,13 +57,10 @@ public class LocationFragmentGeneration extends Fragment {
                 ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
         ) {
-
             Toast.makeText(getContext(), "Access location", Toast.LENGTH_SHORT).show();
             getLastLocation();
-
-        } else {
+        }else{
             requestLocationPermission();
-
         }
 
     }
@@ -73,7 +73,8 @@ public class LocationFragmentGeneration extends Fragment {
                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -90,11 +91,21 @@ public class LocationFragmentGeneration extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode==LOCATION_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getLastLocation();
+                requestGPSSettings();
             }else{
                 Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==REQUEST_CHECK_SETTINGS){
+            if(resultCode == Activity.RESULT_OK){
+                getLastLocation();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -122,7 +133,7 @@ public class LocationFragmentGeneration extends Fragment {
 
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        locationRequest.setInterval(2000);
+        locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(500);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
@@ -134,10 +145,10 @@ public class LocationFragmentGeneration extends Fragment {
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         Log.i("", "All location settings are satisfied.");
-                        Toast.makeText(getContext(), "GPS is already enable", Toast.LENGTH_SHORT).show();
+                        getLastLocation();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        Log.i("", "Location settings are not satisfied. Show the user a dialog to" + "upgrade location settings ");
+                        Log.i("", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
                         try {
                             status.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
@@ -163,19 +174,23 @@ public class LocationFragmentGeneration extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
 
-                if(location!=null){
-                    double lat = location.getLatitude();
-                    double lon = location.getLongitude();
+        if(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Toast.makeText(getContext(), ""+location+"locd", Toast.LENGTH_SHORT).show();
+                    if (location != null) {
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
 
-                    Toast.makeText(getContext(), ""+lat+" "+lon, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "" + lat + " " + lon, Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
+            });
+        }
 
-
-            }
-        });
     }
 }
