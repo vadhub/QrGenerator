@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -34,10 +35,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
+import com.vad.qrscanner.result.ResultQrActivity;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -113,7 +117,6 @@ public class MainActivity extends AppCompatActivity{
         if (requestCode == LOCATION_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 requestGPSSettings();
-                Toast.makeText(this, "onRequest", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
             }
@@ -125,7 +128,6 @@ public class MainActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "onResult", Toast.LENGTH_SHORT).show();
                 getLastLocation();
             }
         }
@@ -172,39 +174,33 @@ public class MainActivity extends AppCompatActivity{
     private void getLastLocation() {
 
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
-                public void onSuccess(Location location) {
-                    if (location != null) {
-                        double lat = location.getLatitude();
-                        double lon = location.getLongitude();
+                public void onComplete(@NonNull Task<Location> task) {
 
-                        Toast.makeText(MainActivity.this, "" + lat + " " + lon, Toast.LENGTH_SHORT).show();
-                    } else {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @SuppressLint("MissingPermission")
-                                    @Override
-                                    public void run() {
-
-                                        LocationCallback callback = new LocationCallback() {
-                                            @Override
-                                            public void onLocationResult(@NonNull LocationResult locationResult) {
-                                                super.onLocationResult(locationResult);
-
-                                                Location loc = locationResult.getLastLocation();
-                                                Toast.makeText(MainActivity.this, "" + loc.getLatitude() + " " + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-                                                fusedLocationProviderClient.removeLocationUpdates(this);
-                                            }
-                                        };
-                                        fusedLocationProviderClient.requestLocationUpdates(getLocationRequest(), callback, Looper.myLooper());
-                                    }
-                                });
-                            }
-                        }).start();
+                    Location location = null;
+                    if(task.isSuccessful() && task.getResult()!=null){
+                        location = task.getResult();
                     }
+
+                    if (location != null) {
+                        float lat = (float) location.getLatitude();
+                        float lon = (float) location.getLongitude();
+
+                        startResult(lat, lon);
+                    } else {
+                        LocationCallback callback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(@NonNull LocationResult locationResult) {
+                                super.onLocationResult(locationResult);
+                                Location loc = locationResult.getLastLocation();
+                                startResult((float) loc.getLatitude(),(float) loc.getLongitude());
+                                fusedLocationProviderClient.removeLocationUpdates(this);
+                            }
+                        };
+                        fusedLocationProviderClient.requestLocationUpdates(getLocationRequest(), callback, Looper.myLooper());
+                    }
+
                 }
             });
         }else{
@@ -219,6 +215,15 @@ public class MainActivity extends AppCompatActivity{
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(1000);
         return locationRequest;
+    }
+
+    private void startResult(float lat, float lon){
+        String str = lat+", "+lon;
+        Bitmap bitmap = GeneratorQr.generate(str);
+        Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
+        intent.putExtra("result_qr", bitmap);
+        startActivity(intent);
+
     }
 
 
