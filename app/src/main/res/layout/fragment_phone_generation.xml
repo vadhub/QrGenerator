@@ -4,7 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".fragments.PhoneFragmentGeneration">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/button_generate_phne"
+        style="@style/cardViewStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/textViewer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/enter_phone_number" />
+
+            <EditText
+                android:id="@+id/editTextPhone"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/phone_number"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/editTextTextName"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextTextLastname"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="@string/lastname"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/button_generate_phne"
@@ -15,54 +70,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_generate_phne"
-        android:orientation="vertical"
-       >
-
-        <TextView
-            android:id="@+id/textView"
-            style="@style/textViewer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/enter_phone_number" />
-
-        <EditText
-            android:id="@+id/editTextPhone"
-            style="@style/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="@string/enter_phone_number"
-            android:inputType="phone" />
-
-        <EditText
-            android:id="@+id/editTextTextName"
-            style="@style/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
-            style="@style/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="10"
-            android:hint="@string/lastname"
-            android:inputType="textPersonName" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

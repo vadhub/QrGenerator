@@ -10,11 +10,13 @@
     <string name="location">location</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="enter_phone_number">Enter phone number</string>
+    <string name="enter_phone_number">Enter contact</string>
     <string name="enter_text">Enter text</string>
+    <string name="phone_number">Phone number</string>
     <string name="enter_link">Enter link</string>
     <string name="generate">generate</string>
     <string name="save">Save</string>
-    <string name="name">name</string>
-    <string name="lastname">lastname</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="please_waiting">Please waiting...</string>
 </resources>

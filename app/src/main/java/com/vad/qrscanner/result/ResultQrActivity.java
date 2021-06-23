@@ -42,8 +42,8 @@ public class ResultQrActivity extends AppCompatActivity {
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
-        Intent intent = getIntent();
 
+        Intent intent = getIntent();
         bitmapQr = intent.getParcelableExtra("result_qr");
         text = intent.getStringExtra("result_text");
 
@@ -63,7 +63,7 @@ public class ResultQrActivity extends AppCompatActivity {
 
         String outFile = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
 
-        Toast.makeText(this, "Image save to "+outFile, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Image save to "+outFile, Toast.LENGTH_LONG).show();
     }
 
     @Override
