@@ -32,7 +32,7 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(String name, String lastname, int numberPhone) {
+    public Contact(int numberPhone, String name, String lastname) {
         this.name = name;
         this.lastname = lastname;
         this.numberPhone = numberPhone;

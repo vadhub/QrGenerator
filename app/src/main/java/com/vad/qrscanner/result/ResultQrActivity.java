@@ -1,9 +1,11 @@
 package com.vad.qrscanner.result;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,8 +40,6 @@ public class ResultQrActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Save");
 
-        ActivityCompat.requestPermissions(ResultQrActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
 
@@ -53,10 +53,21 @@ public class ResultQrActivity extends AppCompatActivity {
     }
 
     public void onSaveQrClick(View view) {
-        if(bitmapQr!=null){
-            saveQr(bitmapQr);
-        }
+        ActivityCompat.requestPermissions(ResultQrActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==REQUEST_CODE){
+            if(grantResults.length>0 && grantResults[0] == Activity.RESULT_OK){
+                if(bitmapQr!=null){
+                    saveQr(bitmapQr);
+                }
+            }else{
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void saveQr(Bitmap bitmap){
