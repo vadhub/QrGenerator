@@ -3,7 +3,7 @@ package com.vad.qrscanner.pojos;
 public class Contact {
     private String name;
     private String lastname;
-    private int numberPhone;
+    private String numberPhone;
 
     public String getName() {
         return name;
@@ -21,18 +21,18 @@ public class Contact {
         this.lastname = lastname;
     }
 
-    public int getNumberPhone() {
+    public String getNumberPhone() {
         return numberPhone;
     }
 
-    public void setNumberPhone(int numberPhone) {
+    public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
 
     public Contact() {
     }
 
-    public Contact(int numberPhone, String name, String lastname) {
+    public Contact(String numberPhone, String name, String lastname) {
         this.name = name;
         this.lastname = lastname;
         this.numberPhone = numberPhone;

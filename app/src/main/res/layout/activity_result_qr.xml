@@ -7,16 +7,21 @@
     android:background="@color/background"
     tools:context=".result.ResultQrActivity">
 
-    <ImageView
-        android:id="@+id/imageViewQrResult"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewResult"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        style="@style/cardViewStyle">
+
+        <ImageView
+            android:id="@+id/imageViewQrResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/button"
@@ -39,4 +44,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

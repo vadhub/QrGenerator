@@ -19,4 +19,5 @@
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="please_waiting">Please waiting...</string>
+    <string name="only_200_characters">*Only 200 characters</string>
 </resources>

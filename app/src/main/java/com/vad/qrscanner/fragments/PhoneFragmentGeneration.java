@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.vad.qrscanner.GeneratorQr;
 import com.vad.qrscanner.R;
@@ -37,10 +39,20 @@ public class PhoneFragmentGeneration extends Fragment {
         btnGenerationContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Contact contact = new Contact(Integer.parseInt(editTextPhone.getText().toString()), editTextName.getText().toString(), editTextLastname.getText().toString());
-                String str = "phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname();
-                Bitmap bitmap = GeneratorQr.generate("phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname());
-                resultActivityStart(bitmap, str);
+                if(
+                        (!editTextPhone.getText().toString().equals("")&&!editTextName.getText().toString().equals("")&&!editTextLastname.getText().toString().equals(""))&&
+                                (!editTextPhone.getText().toString().equals("")&&!editTextName.getText().toString().equals("")||!editTextLastname.getText().toString().equals(""))&&
+                                (!editTextPhone.getText().toString().equals("")||!editTextName.getText().toString().equals("")&&!editTextLastname.getText().toString().equals(""))
+                ){
+                    Contact contact = new Contact(editTextPhone.getText().toString(), editTextName.getText().toString(), editTextLastname.getText().toString());
+                    String str = "phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname();
+                    Bitmap bitmap = GeneratorQr.generate("phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname());
+                    resultActivityStart(bitmap, str);
+                }else{
+                    Toast toast =  Toast.makeText(getContext(), "Enter text", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0,0);
+                    toast.show();
+                }
             }
         });
 

@@ -8,22 +8,41 @@
     tools:context=".fragments.TextFragmentGeneration">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         style="@style/cardViewStyle"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/buttonTextGenerate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintVertical_bias="0.1">
 
-        <EditText
-            android:id="@+id/editTextText"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="50"
-            android:gravity="start|top"
-            android:hint="@string/enter_text"
-            android:inputType="textMultiLine" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="25dp"
+                android:ems="50"
+                android:maxLength="200"
+                android:gravity="start|top"
+                android:hint="@string/enter_text"
+                android:inputType="textMultiLine" />
+
+            <TextView
+                android:id="@+id/textViewWatcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8sp"
+                android:layout_marginBottom="8sp"
+                android:text="0/200"
+                android:layout_gravity="bottom|right"/>
+
+        </FrameLayout>
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -42,8 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10sp"
         android:layout_marginBottom="16dp"
-        android:text="*Only 50 characters"
+        android:text="@string/only_200_characters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonTextGenerate" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
