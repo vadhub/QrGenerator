@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vad.qrscanner.R;
@@ -23,7 +24,9 @@ import java.io.IOException;
 public class ResultQrActivity extends AppCompatActivity {
 
     private ImageView imageViewQr;
+    private TextView textViewResult;
     private Bitmap bitmapQr;
+    private String text;
 
     public static final int REQUEST_CODE = 2356;
 
@@ -38,10 +41,14 @@ public class ResultQrActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(ResultQrActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
+        textViewResult = (TextView) findViewById(R.id.textViewResult);
         Intent intent = getIntent();
+
         bitmapQr = intent.getParcelableExtra("result_qr");
+        text = intent.getStringExtra("result_text");
 
         imageViewQr.setImageBitmap(bitmapQr);
+        textViewResult.setText(text);
 
     }
 

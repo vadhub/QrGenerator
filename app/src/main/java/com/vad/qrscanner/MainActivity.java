@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.ResultQrActivity;
@@ -55,8 +56,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void checkPermission() {
         if (
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(this, "Access location", Toast.LENGTH_SHORT).show();
             requestLocationPermission();
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity{
 
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_CODE);
     }
 
     @Override
@@ -101,6 +100,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
 
                 case R.id.coord_nav:
+                    selected = new LocationFragmentGeneration();
                     checkPermission();
                     break;
             }
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     if (location != null) {
-                        float lat = (float) location.getLatitude();
-                        float lon = (float) location.getLongitude();
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
 
                         startResult(lat, lon);
                     } else {
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity{
                             public void onLocationResult(@NonNull LocationResult locationResult) {
                                 super.onLocationResult(locationResult);
                                 Location loc = locationResult.getLastLocation();
-                                startResult((float) loc.getLatitude(),(float) loc.getLongitude());
+                                startResult(loc.getLatitude(),loc.getLongitude());
                                 fusedLocationProviderClient.removeLocationUpdates(this);
                             }
                         };
@@ -217,11 +217,12 @@ public class MainActivity extends AppCompatActivity{
         return locationRequest;
     }
 
-    private void startResult(float lat, float lon){
+    private void startResult(double lat, double lon){
         String str = lat+", "+lon;
         Bitmap bitmap = GeneratorQr.generate(str);
         Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
         intent.putExtra("result_qr", bitmap);
+        intent.putExtra("result_text", "Your location (Lat,Lon): "+str);
         startActivity(intent);
 
     }
