@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +31,7 @@ public class ResultQrActivity extends AppCompatActivity {
     private Bitmap bitmapQr;
     private String text;
 
-    public static final int REQUEST_CODE = 2356;
+    public static final int REQUEST_CODE = 24356;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class ResultQrActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==REQUEST_CODE){
-            if(grantResults.length>0 && grantResults[0] == Activity.RESULT_OK){
+            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if(bitmapQr!=null){
                     saveQr(bitmapQr);
                 }
