@@ -45,11 +45,11 @@ public class PhoneFragmentGeneration extends Fragment {
                                 (!editTextPhone.getText().toString().equals("")||!editTextName.getText().toString().equals("")&&!editTextLastname.getText().toString().equals(""))
                 ){
                     Contact contact = new Contact(editTextPhone.getText().toString(), editTextName.getText().toString(), editTextLastname.getText().toString());
-                    String str = "phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname();
-                    Bitmap bitmap = GeneratorQr.generate("phone number: "+contact.getNumberPhone()+", name: "+contact.getName()+", lastname: "+contact.getLastname());
+                    String str = getString(R.string.phone_number_text)+contact.getNumberPhone()+getString(R.string.name_text)+contact.getName()+getString(R.string.lastname_text)+contact.getLastname();
+                    Bitmap bitmap = GeneratorQr.generate(getString(R.string.phone_number_text)+contact.getNumberPhone()+getString(R.string.name_text)+contact.getName()+getString(R.string.lastname_text)+contact.getLastname());
                     resultActivityStart(bitmap, str);
                 }else{
-                    Toast toast =  Toast.makeText(getContext(), "Enter text", Toast.LENGTH_SHORT);
+                    Toast toast =  Toast.makeText(getContext(), R.string.enter_text_pl, Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0,0);
                     toast.show();
                 }

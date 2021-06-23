@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QR-генератор</string>
+    <string name="permission_name">Доступ к местоположению</string>
+    <string name="permission_message_body">Доступ к точному местоположению</string>
+    <string name="permission_ok">предоставляется</string>
+    <string name="permission_deny">отказать</string>
+    <string name="phone">телефон</string>
+    <string name="text">текст</string>
+    <string name="link">ссылка</string>
+    <string name="location">местоположение</string>
+    <string name="enter_phone_number">Введите контакт</string>
+    <string name="enter_text">Введите текст</string>
+    <string name="phone_number">Телефонный номер</string>
+    <string name="enter_link">Введите ссылку</string>
+    <string name="generate">создать</string>
+    <string name="save">Сохранить</string>
+    <string name="name">Имя</string>
+    <string name="lastname">Фамилия</string>
+    <string name="please_waiting">Пожалуйста подождите</string>
+    <string name="only_200_characters">*Всего 200 символов</string>
+    <string name="access_location">Доступ к местоположению</string>
+    <string name="permission_denied">В доступе отказано</string>
+    <string name="location_title">Ваше местоположение (Lat,Lon):</string>
+    <string name="unable_gsp">GPS не работает</string>
+    <string name="phone_number_text">телефонный номер:</string>
+    <string name="name_text">, имя:</string>
+    <string name="lastname_text">, фамилия:</string>
+    <string name="enter_text_pl">Введите текст!</string>
+</resources>

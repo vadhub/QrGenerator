@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QrGenerator</string>
+    <string name="app_name">QR Generator</string>
     <string name="permission_name">Access location</string>
     <string name="permission_message_body">Access Fine Location</string>
     <string name="permission_ok">granted</string>
@@ -9,15 +9,23 @@
     <string name="link">link</string>
     <string name="location">location</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="enter_phone_number">Enter contact</string>
     <string name="enter_text">Enter text</string>
     <string name="phone_number">Phone number</string>
     <string name="enter_link">Enter link</string>
-    <string name="generate">generate</string>
+    <string name="generate">create</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="please_waiting">Please waiting...</string>
     <string name="only_200_characters">*Only 200 characters</string>
+    <string name="access_location">Access location</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="location_title">Your location (Lat,Lon):</string>
+    <string name="unable_gsp">GPS unable</string>
+    <string name="phone_number_text">"phone number: "</string>
+    <string name="name_text">", name: "</string>
+    <string name="lastname_text">", lastname: "</string>
+    <string name="enter_text_pl">Enter text!</string>
 </resources>

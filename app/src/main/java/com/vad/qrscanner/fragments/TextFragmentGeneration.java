@@ -44,7 +44,7 @@ public class TextFragmentGeneration extends Fragment {
                     Bitmap bitmap = GeneratorQr.generate(str);
                     resultActivityStart(bitmap);
                 }else{
-                    Toast toast =  Toast.makeText(getContext(), "Enter text", Toast.LENGTH_SHORT);
+                    Toast toast =  Toast.makeText(getContext(), getString(R.string.enter_text_pl), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0,0);
                     toast.show();
                 }

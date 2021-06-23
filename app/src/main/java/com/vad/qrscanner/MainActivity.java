@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity{
         if (
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
-            Toast.makeText(this, "Access location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.access_location), Toast.LENGTH_SHORT).show();
             requestLocationPermission();
         } else {
             requestGPSSettings();
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity{
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 requestGPSSettings();
             } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity{
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Toast.makeText(MainActivity.this, "GPS unable", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.unable_gsp), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = GeneratorQr.generate(str);
         Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
         intent.putExtra("result_qr", bitmap);
-        intent.putExtra("result_text", "Your location (Lat,Lon): "+str);
+        intent.putExtra("result_text", getString(R.string.location_title)+str);
         startActivity(intent);
 
     }
