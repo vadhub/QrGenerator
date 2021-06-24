@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import dev.sasikanth.colorsheet.ColorSheet;
+
 public class ResultQrActivity extends AppCompatActivity {
 
     private ImageView imageViewQr;
@@ -50,7 +52,6 @@ public class ResultQrActivity extends AppCompatActivity {
 
         imageViewQr.setImageBitmap(bitmapQr);
         textViewResult.setText(text);
-
     }
 
     public void onSaveQrClick(View view) {

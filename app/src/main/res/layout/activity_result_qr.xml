@@ -8,12 +8,14 @@
     tools:context=".result.ResultQrActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewRes"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewResult"
+
         style="@style/cardViewStyle">
 
         <ImageView
@@ -21,7 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change color"
+            android:layout_gravity="bottom|center"/>
+
+        
+
     </androidx.cardview.widget.CardView>
+
 
     <Button
         android:id="@+id/button"
