@@ -17,7 +17,7 @@
     <string name="generate">create</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
-    <string name="lastname">Lastname</string>
+    <string name="lastname">Last name</string>
     <string name="please_waiting">Please waiting...</string>
     <string name="only_200_characters">*Only 200 characters</string>
     <string name="access_location">Access location</string>
@@ -28,4 +28,5 @@
     <string name="name_text">", name: "</string>
     <string name="lastname_text">", lastname: "</string>
     <string name="enter_text_pl">Enter text!</string>
+    <string name="save_to">"Image saved to "</string>
 </resources>

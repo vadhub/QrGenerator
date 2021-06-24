@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gerador QR</string>
+    <string name="permission_name">Localização de acesso</string>
+    <string name="permission_message_body">Acessar a localização perfeita</string>
+    <string name="permission_ok">garantido</string>
+    <string name="permission_deny">negar</string>
+    <string name="phone">telefone</string>
+    <string name="text">texto</string>
+    <string name="link">link</string>
+    <string name="location">localização</string>
+    <string name="enter_phone_number">Insira o contato</string>
+    <string name="enter_text">Digite o texto</string>
+    <string name="phone_number">Número de telefone</string>
+    <string name="enter_link">Insira o link</string>
+    <string name="generate">Criar</string>
+    <string name="save">Salve</string>
+    <string name="name">Nome</string>
+    <string name="lastname">Sobrenome</string>
+    <string name="please_waiting">Aguarde ...</string>
+    <string name="only_200_characters">*Apenas 200 caracteres</string>
+    <string name="access_location">Localização de acesso</string>
+    <string name="permission_denied">Permissão negada</string>
+    <string name="location_title">Sua localização (Lat, Lon):</string>
+    <string name="unable_gsp">GPS incapaz</string>
+    <string name="phone_number_text">número de telefone:</string>
+    <string name="name_text">, nome:</string>
+    <string name="lastname_text">, sobrenome:</string>
+    <string name="enter_text_pl">Insira o texto!</string>
+    <string name="save_to">Imagem salva em</string>
+</resources>

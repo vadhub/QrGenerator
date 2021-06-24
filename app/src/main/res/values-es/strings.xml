@@ -27,4 +27,5 @@
     <string name="name_text">", nombre: "</string>
     <string name="lastname_text">", apellido: "</string>
     <string name="enter_text_pl">¡Ingrese texto!</string>
+    <string name="save_to">Imagen guardada en</string>
 </resources>

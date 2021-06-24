@@ -27,4 +27,5 @@
     <string name="name_text">, имя:</string>
     <string name="lastname_text">, фамилия:</string>
     <string name="enter_text_pl">Введите текст!</string>
+    <string name="save_to">Изображение сохранено в</string>
 </resources>

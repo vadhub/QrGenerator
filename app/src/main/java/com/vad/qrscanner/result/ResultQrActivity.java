@@ -39,7 +39,7 @@ public class ResultQrActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result_qr);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Save");
+        setTitle(getString(R.string.save));
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
@@ -66,7 +66,7 @@ public class ResultQrActivity extends AppCompatActivity {
                     saveQr(bitmapQr);
                 }
             }else{
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -75,7 +75,7 @@ public class ResultQrActivity extends AppCompatActivity {
 
         String outFile = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
 
-        Toast.makeText(this, "Image save to "+outFile, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.save_to)+outFile, Toast.LENGTH_LONG).show();
     }
 
     @Override
