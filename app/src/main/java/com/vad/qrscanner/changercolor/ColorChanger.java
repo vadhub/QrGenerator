@@ -12,6 +12,13 @@ public class ColorChanger extends View {
     private int color;
     private Paint mPaint;
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     public ColorChanger(Context context) {
         super(context);
@@ -32,5 +39,6 @@ public class ColorChanger extends View {
         cy = radius;
 
         canvas.drawCircle(cx, cy, radius, mPaint);
+        invalidate();
     }
 }

@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vad.qrscanner.R;
+import com.vad.qrscanner.changercolor.ColorChanger;
 
 public class ResultQrActivity extends AppCompatActivity {
 
@@ -23,6 +25,8 @@ public class ResultQrActivity extends AppCompatActivity {
     private TextView textViewResult;
     private Bitmap bitmapQr;
     private String text;
+    private ColorChanger colorChanger;
+    private int[] colors;
 
     public static final int REQUEST_CODE = 24356;
 
@@ -36,6 +40,8 @@ public class ResultQrActivity extends AppCompatActivity {
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
+        colorChanger = new ColorChanger(this);
+        colors = new int[]{Color.GREEN, Color.BLUE, Color.GRAY, Color.DKGRAY, Color.CYAN};
 
         Intent intent = getIntent();
         bitmapQr = intent.getParcelableExtra("result_qr");
@@ -74,5 +80,10 @@ public class ResultQrActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    public void onChangeColorListener(View view) {
+        AdapterForColorSheet adapterForColorSheet = new AdapterForColorSheet();
+        adapterForColorSheet.getColorPick(this, colors);
     }
 }
