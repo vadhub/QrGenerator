@@ -1,18 +1,16 @@
 package com.vad.qrscanner.result
 
-import android.app.Activity
-import android.content.Context
-import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import dev.sasikanth.colorsheet.ColorSheet
 
 class AdapterForColorSheet {
-    fun getColorPick(activity: Activity){
+    fun getColorPick(activity: AppCompatActivity){
         val colors = intArrayOf()
         ColorSheet().colorPicker(
                 colors = colors,
                 listener = { color ->
                     println(color)
                 })
-                .show(supportFragmentManager)
+                .show(activity.supportFragmentManager);
     }
 }

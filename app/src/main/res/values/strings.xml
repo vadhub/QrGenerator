@@ -29,4 +29,5 @@
     <string name="lastname_text">", lastname: "</string>
     <string name="enter_text_pl">Enter text!</string>
     <string name="save_to">"Image saved to "</string>
+    <string name="change_color">Change color</string>
 </resources>

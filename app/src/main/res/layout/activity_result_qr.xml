@@ -24,14 +24,28 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Change color"
-            android:layout_gravity="bottom|center"/>
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|center"
+            android:gravity="center"
+            >
 
-        
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_color"
+                />
+
+            <com.vad.qrscanner.changercolor.ColorChanger
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+
+                />
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
