@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ColorChanger">
+        <attr name="changer_color" format="color"/>
+        <attr name="changer_size" format="dimension"/>
+    </declare-styleable>
+</resources>
