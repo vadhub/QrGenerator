@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_launcher_foreground" />
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -45,10 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
-                /><!--some change errors-->
-
-        </LinearLayout>
-
+                />some change errors-->
     </androidx.cardview.widget.CardView>
 
 
