@@ -39,8 +39,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
+import com.vad.qrscanner.fragments.ScannerQRFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.ResultQrActivity;
 
@@ -130,6 +133,13 @@ public class MainActivity extends AppCompatActivity{
             if (resultCode == Activity.RESULT_OK) {
                 getLastLocation();
             }
+        }
+
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(intentResult.getContents()!=null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new ScannerQRFragment()).commit();
+            setTitle("QR result");
         }
     }
 
