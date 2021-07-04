@@ -46,9 +46,10 @@ import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.ScannerQRFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.ResultQrActivity;
+import com.vad.qrscanner.showcontentqr.Showable;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements Showable {
 
     private BottomNavigationView navigationView;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity{
     private FusedLocationProviderClient fusedLocationProviderClient;
     public static final int LOCATION_PERMISSION_CODE = 15032;
     public static final int REQUEST_CHECK_SETTINGS = 15232;
+    private String dataContent;
 
     private void checkPermission() {
         if (
@@ -129,18 +131,24 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result!=null){
+            if(result.getContents() != null){
+                dataContent=result.getContents();
+                showContent();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new ScannerQRFragment(this)).commit();
+            }else{
+                Toast.makeText(this, "cancelled", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
                 getLastLocation();
             }
         }
 
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-
-        if(intentResult.getContents()!=null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new ScannerQRFragment()).commit();
-            setTitle("QR result");
-        }
     }
 
     private void requestGPSSettings() {
@@ -238,4 +246,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public String showContent() {
+        return dataContent;
+    }
 }
