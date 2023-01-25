@@ -10,6 +10,7 @@ class CheckEmptyText {
                     it.error = "empty text"
                 } else {
                     runnable.run()
+                    return
                 }
             }
         }
