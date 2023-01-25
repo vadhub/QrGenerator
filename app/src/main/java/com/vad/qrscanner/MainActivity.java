@@ -1,12 +1,5 @@
 package com.vad.qrscanner;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -20,12 +13,18 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -36,23 +35,24 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
+import com.vad.qrscanner.result.CaptureActivityImpl;
 import com.vad.qrscanner.result.ResultQrActivity;
 
 
 public class MainActivity extends AppCompatActivity{
 
-    private BottomNavigationView navigationView;
-
     private LocationManager mLocationManager;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    public static final int LOCATION_PERMISSION_CODE = 15032;
+
     public static final int REQUEST_CHECK_SETTINGS = 15232;
+    public static final int LOCATION_PERMISSION_CODE = 15032;
 
     private void checkPermission() {
         if (
@@ -75,40 +75,55 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        fusedLocationProviderClient = new FusedLocationProviderClient(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         navigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            Fragment selected = null;
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+                if(result.getContents() == null) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                }
+            });
 
-            switch (item.getItemId()){
-                case R.id.phone_nav:
-                    selected = new PhoneFragmentGeneration();
-                    break;
+    @SuppressLint("SuspiciousIndentation")
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
 
-                case R.id.text_nav:
-                    selected = new TextFragmentGeneration();
-                    break;
+        Fragment selected = null;
 
-                case R.id.coord_nav:
-                    selected = new LocationFragmentGeneration();
-                    checkPermission();
-                    break;
-            }
+        switch (item.getItemId()){
+            case R.id.phone_nav:
+                selected = new PhoneFragmentGeneration();
+                break;
 
-            if(selected!=null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
-            return true;
+            case R.id.text_nav:
+                selected = new TextFragmentGeneration();
+                break;
+
+            case R.id.coord_nav:
+                selected = new LocationFragmentGeneration();
+                checkPermission();
+                break;
+
+            case R.id.scanner_nav:
+                ScanOptions scanOptions = new ScanOptions();
+                scanOptions.setOrientationLocked(true);
+                scanOptions.setPrompt("Scan a qr");
+                scanOptions.setCaptureActivity(CaptureActivityImpl.class);
+                barcodeLauncher.launch(scanOptions);
+                break;
         }
+
+        if(selected!=null) getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
+        return true;
     };
 
     @Override
@@ -145,27 +160,24 @@ public class MainActivity extends AppCompatActivity{
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        Log.i("", "All location settings are satisfied.");
-                        getLastLocation();
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        Log.i("", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
-                        try {
-                            status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
-                        } catch (IntentSender.SendIntentException e) {
-                            Log.e("Applicationsett", e.toString());
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        Toast.makeText(MainActivity.this, getString(R.string.unable_gsp), Toast.LENGTH_SHORT).show();
-                        break;
-                }
+        result.setResultCallback(result1 -> {
+            final Status status = result1.getStatus();
+            switch (status.getStatusCode()) {
+                case LocationSettingsStatusCodes.SUCCESS:
+                    Log.i("", "All location settings are satisfied.");
+                    getLastLocation();
+                    break;
+                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                    Log.i("", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+                    try {
+                        status.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException e) {
+                        Log.e("Applicationsett", e.toString());
+                    }
+                    break;
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    Toast.makeText(MainActivity.this, getString(R.string.unable_gsp), Toast.LENGTH_SHORT).show();
+                    break;
             }
         });
     }

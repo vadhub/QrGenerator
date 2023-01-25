@@ -36,30 +36,27 @@ public class PhoneFragmentGeneration extends Fragment {
 
         btnGenerationContact = (Button) v.findViewById(R.id.button_generate_phne);
 
-        btnGenerationContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(
-                        (!editTextPhone.getText().toString().equals("")&&!editTextName.getText().toString().equals("")&&!editTextLastname.getText().toString().equals(""))&&
-                                (!editTextPhone.getText().toString().equals("")&&!editTextName.getText().toString().equals("")||!editTextLastname.getText().toString().equals(""))&&
-                                (!editTextPhone.getText().toString().equals("")||!editTextName.getText().toString().equals("")&&!editTextLastname.getText().toString().equals(""))
-                ){
-                    Contact contact = new Contact(editTextPhone.getText().toString(), editTextName.getText().toString(), editTextLastname.getText().toString());
-                    String str = getString(R.string.phone_number_text)+contact.getNumberPhone()+getString(R.string.name_text)+contact.getName()+getString(R.string.lastname_text)+contact.getLastname();
-                    Bitmap bitmap = GeneratorQr.generate(getString(R.string.phone_number_text)+contact.getNumberPhone()+getString(R.string.name_text)+contact.getName()+getString(R.string.lastname_text)+contact.getLastname());
-                    resultActivityStart(bitmap, str);
-                }else{
-                    Toast toast =  Toast.makeText(getContext(), R.string.enter_text_pl, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER, 0,0);
-                    toast.show();
-                }
+        btnGenerationContact.setOnClickListener(view -> {
+            if (
+                    (!editTextPhone.getText().toString().equals("") && !editTextName.getText().toString().equals("") && !editTextLastname.getText().toString().equals("")) &&
+                            (!editTextPhone.getText().toString().equals("") && !editTextName.getText().toString().equals("") || !editTextLastname.getText().toString().equals("")) &&
+                            (!editTextPhone.getText().toString().equals("") || !editTextName.getText().toString().equals("") && !editTextLastname.getText().toString().equals(""))
+            ) {
+                Contact contact = new Contact(editTextPhone.getText().toString(), editTextName.getText().toString(), editTextLastname.getText().toString());
+                String str = getString(R.string.phone_number_text) + contact.getNumberPhone() + getString(R.string.name_text) + contact.getName() + getString(R.string.lastname_text) + contact.getLastname();
+                Bitmap bitmap = GeneratorQr.generate(getString(R.string.phone_number_text) + contact.getNumberPhone() + getString(R.string.name_text) + contact.getName() + getString(R.string.lastname_text) + contact.getLastname());
+                resultActivityStart(bitmap, str);
+            } else {
+                Toast toast = Toast.makeText(getContext(), R.string.enter_text_pl, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
 
         return v;
     }
 
-    private void resultActivityStart(Bitmap bitmap, String contact){
+    private void resultActivityStart(Bitmap bitmap, String contact) {
         Intent intentRes = new Intent(getContext(), ResultQrActivity.class);
         intentRes.putExtra("result_qr", bitmap);
         intentRes.putExtra("result_text", contact);

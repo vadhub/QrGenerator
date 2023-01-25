@@ -28,8 +28,8 @@ public class GeneratorQr {
         int height = bitmap.getHeight();
         int width = bitmap.getWidth();
 
-        float srcHSV[] = new float[3];
-        float dstHSV[] = new float[3];
+        float[] srcHSV = new float[3];
+        float[] dstHSV = new float[3];
 
         Bitmap bitmapResult = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
