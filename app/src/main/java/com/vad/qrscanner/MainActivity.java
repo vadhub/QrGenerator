@@ -3,6 +3,8 @@ package com.vad.qrscanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -41,6 +43,7 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
+import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.CaptureActivityImpl;
 import com.vad.qrscanner.result.ResultQrActivity;
@@ -90,7 +93,11 @@ public class MainActivity extends AppCompatActivity{
                 if(result.getContents() == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    Bundle args = new Bundle();
+                    args.putString("content", result.getContents());
+                    Fragment fragmentResult = new ResultFragment();
+                    fragmentResult.setArguments(args);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
                 }
             });
 
