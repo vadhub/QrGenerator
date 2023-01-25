@@ -31,4 +31,5 @@
     <string name="save_to">"Image saved to "</string>
     <string name="change_color">Change color</string>
     <string name="scanner">scanner</string>
+    <string name="result">result</string>
 </resources>

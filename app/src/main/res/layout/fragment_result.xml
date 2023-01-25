@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="8dp"
     tools:context=".fragments.ResultFragment">
 
@@ -18,8 +19,15 @@
             android:id="@+id/resultQr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="text"
+            android:hint="@string/result"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/copyImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        app:srcCompat="@drawable/ic_baseline_content_copy_24" />
 
 </LinearLayout>
