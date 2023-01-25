@@ -11,4 +11,15 @@
 
     <color name="blue_200">#1e88e5</color>
     <color name="blue_300">#4B9FEA</color>
+
+    <color name="c">#8BC34A</color>
+
+    <string-array name="colors">
+        <item>#FFBB86FC</item>
+        <item>#FF6200EE</item>
+        <item>#1e88e5</item>
+        <item>#F44336</item>
+        <item>#FF000000</item>
+        <item>#8BC34A</item>
+    </string-array>
 </resources>

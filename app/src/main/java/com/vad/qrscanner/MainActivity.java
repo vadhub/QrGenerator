@@ -3,13 +3,12 @@ package com.vad.qrscanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -48,6 +47,8 @@ import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.CaptureActivityImpl;
 import com.vad.qrscanner.result.ResultQrActivity;
 
+import dev.sasikanth.colorsheet.ColorSheet;
+
 
 public class MainActivity extends AppCompatActivity{
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -238,7 +240,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void startResult(double lat, double lon){
         String str = lat+", "+lon;
-        Bitmap bitmap = GeneratorQr.generate(str);
+        Bitmap bitmap = QRGenerator.generate(str);
         Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
         intent.putExtra("result_qr", bitmap);
         intent.putExtra("result_text", getString(R.string.location_title)+str);

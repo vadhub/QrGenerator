@@ -16,17 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vad.qrscanner.QRGenerator;
 import com.vad.qrscanner.R;
-import com.vad.qrscanner.changercolor.ColorChanger;
+
+import dev.sasikanth.colorsheet.ColorSheet;
 
 public class ResultQrActivity extends AppCompatActivity {
 
+    private Bitmap bitmapQr;
+    private int[] colors;
+    private String text;
+
     private ImageView imageViewQr;
     private TextView textViewResult;
-    private Bitmap bitmapQr;
-    private String text;
-    private ColorChanger colorChanger;
-    private int[] colors;
 
     public static final int REQUEST_CODE = 24356;
 
@@ -40,12 +42,18 @@ public class ResultQrActivity extends AppCompatActivity {
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
         textViewResult = (TextView) findViewById(R.id.textViewResult);
-        colorChanger = new ColorChanger(this);
-        colors = new int[]{Color.GREEN, Color.BLUE, Color.GRAY, Color.DKGRAY, Color.CYAN};
 
         Intent intent = getIntent();
-        bitmapQr = intent.getParcelableExtra("result_qr");
         text = intent.getStringExtra("result_text");
+        bitmapQr = QRGenerator.generate(text);
+
+        String[] res = getResources().getStringArray(R.array.colors);
+        colors = new int[res.length];
+
+        for (int i = 0; i < res.length; i++) {
+            colors[i] = Color.parseColor(res[i]);
+        }
+
 
         imageViewQr.setImageBitmap(bitmapQr);
         textViewResult.setText(text);
@@ -53,6 +61,16 @@ public class ResultQrActivity extends AppCompatActivity {
 
     public void onSaveQrClick(View view) {
         ActivityCompat.requestPermissions(ResultQrActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+    }
+
+    public void onPickColor(View view) {
+        new ColorSheet().colorPicker(colors, 0,true,
+                c -> {
+                    imageViewQr.setImageBitmap(QRGenerator.changeColor(bitmapQr, c));
+                    textViewResult.setText(text);
+                    return null;
+                }
+        ).show(getSupportFragmentManager());
     }
 
     @Override
@@ -80,10 +98,5 @@ public class ResultQrActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
-    }
-
-    public void onChangeColorListener(View view) {
-        AdapterForColorSheet adapterForColorSheet = new AdapterForColorSheet();
-        adapterForColorSheet.getColorPick(this, colors);
     }
 }

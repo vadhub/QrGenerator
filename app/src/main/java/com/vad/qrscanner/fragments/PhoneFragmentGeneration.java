@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.vad.qrscanner.GeneratorQr;
+import com.vad.qrscanner.QRGenerator;
 import com.vad.qrscanner.R;
 import com.vad.qrscanner.pojos.Contact;
 import com.vad.qrscanner.result.ResultQrActivity;
@@ -24,7 +24,6 @@ public class PhoneFragmentGeneration extends Fragment {
     private EditText editTextPhone;
     private EditText editTextName;
     private EditText editTextLastname;
-    private Button btnGenerationContact;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +33,7 @@ public class PhoneFragmentGeneration extends Fragment {
         editTextName = (EditText) v.findViewById(R.id.editTextTextName);
         editTextLastname = (EditText) v.findViewById(R.id.editTextTextLastname);
 
-        btnGenerationContact = (Button) v.findViewById(R.id.button_generate_phne);
+        Button btnGenerationContact = (Button) v.findViewById(R.id.button_generate_phne);
 
         btnGenerationContact.setOnClickListener(view -> {
             if (
@@ -44,7 +43,7 @@ public class PhoneFragmentGeneration extends Fragment {
             ) {
                 Contact contact = new Contact(editTextPhone.getText().toString(), editTextName.getText().toString(), editTextLastname.getText().toString());
                 String str = getString(R.string.phone_number_text) + contact.getNumberPhone() + getString(R.string.name_text) + contact.getName() + getString(R.string.lastname_text) + contact.getLastname();
-                Bitmap bitmap = GeneratorQr.generate(getString(R.string.phone_number_text) + contact.getNumberPhone() + getString(R.string.name_text) + contact.getName() + getString(R.string.lastname_text) + contact.getLastname());
+                Bitmap bitmap = QRGenerator.generate(getString(R.string.phone_number_text) + contact.getNumberPhone() + getString(R.string.name_text) + contact.getName() + getString(R.string.lastname_text) + contact.getLastname());
                 resultActivityStart(bitmap, str);
             } else {
                 Toast toast = Toast.makeText(getContext(), R.string.enter_text_pl, Toast.LENGTH_SHORT);
