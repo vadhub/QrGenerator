@@ -7,6 +7,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class QRGenerator {
@@ -14,7 +15,7 @@ public class QRGenerator {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(textToQr, BarcodeFormat.QR_CODE, 350, 350);
+            BitMatrix bitMatrix = multiFormatWriter.encode(textToQr, BarcodeFormat.QR_CODE, 512, 512);
             BarcodeEncoder encoder = new BarcodeEncoder();
             bitmap = encoder.createBitmap(bitMatrix);
         } catch (WriterException e) {
@@ -24,28 +25,23 @@ public class QRGenerator {
         return bitmap;
     }
 
-    public static Bitmap changeColor(Bitmap bitmap, int color){
-        int height = bitmap.getHeight();
-        int width = bitmap.getWidth();
-
-        float[] srcHSV = new float[3];
-        float[] dstHSV = new float[3];
-
-        Bitmap bitmapResult = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        for(int row = 0; row<height; row++){
-            for(int col = 0; col<width; col++){
-                int pixel = bitmap.getPixel(col, row);
-                int alpha = Color.alpha(pixel);
-                Color.colorToHSV(pixel,srcHSV);
-                Color.colorToHSV(color, dstHSV);
-
-                dstHSV[2]=srcHSV[2];
-
-                bitmapResult.setPixel(col, row, Color.HSVToColor(alpha,dstHSV));
+    public static Bitmap changeColor(int color, String content){
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? color : Color.WHITE);
+                }
             }
-        }
+            return bmp;
 
-        return bitmapResult;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

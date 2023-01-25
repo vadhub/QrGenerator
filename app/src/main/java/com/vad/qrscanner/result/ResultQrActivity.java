@@ -66,7 +66,7 @@ public class ResultQrActivity extends AppCompatActivity {
     public void onPickColor(View view) {
         new ColorSheet().colorPicker(colors, 0,true,
                 c -> {
-                    imageViewQr.setImageBitmap(QRGenerator.changeColor(bitmapQr, c));
+                    imageViewQr.setImageBitmap(QRGenerator.changeColor(c, text));
                     textViewResult.setText(text);
                     return null;
                 }
