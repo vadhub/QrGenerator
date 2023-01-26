@@ -92,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
-                if(result.getContents() == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
+                if(result.getContents() != null) {
                     Bundle args = new Bundle();
                     args.putString("content", result.getContents());
                     Fragment fragmentResult = new ResultFragment();
@@ -106,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 Bundle args = new Bundle();
-                System.out.println(FileUtils.getPath(uri, this));
                 String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
                 args.putString("content", content);
                 Fragment fragmentResult = new ResultFragment();
