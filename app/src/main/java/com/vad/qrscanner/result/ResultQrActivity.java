@@ -64,40 +64,39 @@ public class ResultQrActivity extends AppCompatActivity {
     }
 
     public void onPickColor(View view) {
-        new ColorSheet().colorPicker(colors, 0,true,
-                c -> {
-                    imageViewQr.setImageBitmap(QRTools.changeColor(c, text));
-                    textViewResult.setText(text);
-                    return null;
-                }
+        new ColorSheet().colorPicker(colors, 0, true, c -> {
+            bitmapQr = QRTools.changeColor(c, text);
+            imageViewQr.setImageBitmap(bitmapQr);
+            textViewResult.setText(text);
+            return null;
+        }
         ).show(getSupportFragmentManager());
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==REQUEST_CODE){
-            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if(bitmapQr!=null){
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (bitmapQr != null) {
                     saveQr(bitmapQr);
                 }
-            }else{
+            } else {
                 Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void saveQr(Bitmap bitmap){
+    private void saveQr(Bitmap bitmap) {
 
-        String outFile = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
+        String outFile = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "" + System.currentTimeMillis(), "");
 
-        Toast.makeText(this, getString(R.string.save_to)+outFile, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.save_to) + outFile, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         finish();
-
         return true;
     }
 }
