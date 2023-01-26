@@ -1,6 +1,5 @@
 package com.vad.qrscanner.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
-import com.vad.qrscanner.result.ResultQrActivity;
 
 public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle, HasCustomAction {
 
@@ -33,10 +31,13 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
         editTextPhone = (EditText) v.findViewById(R.id.editTextPhone);
         editTextName = (EditText) v.findViewById(R.id.editTextTextName);
         editTextLastname = (EditText) v.findViewById(R.id.editTextTextLastname);
+        return v;
+    }
 
-        Button btnGenerationContact = (Button) v.findViewById(R.id.button_generate_phne);
-
-        btnGenerationContact.setOnClickListener(view -> {
+    @NonNull
+    @Override
+    public CustomAction setCustomAction(@NonNull Navigator navigator) {
+        return new CustomAction(R.drawable.ic_baseline_done_24, () -> {
             CheckEmptyText.Companion.check(
                     new EditText[]{editTextPhone, editTextName, editTextLastname}, () -> {
                         str =
@@ -47,15 +48,7 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
                                         getString(R.string.lastname_text) +
                                         editTextLastname.getText().toString();
                     });
-        });
 
-        return v;
-    }
-
-    @NonNull
-    @Override
-    public CustomAction setCustomAction(@NonNull Navigator navigator) {
-        return new CustomAction(R.drawable.ic_baseline_done_24, () -> {
             Bundle bundle = new Bundle();
             bundle.putString("result_text", str);
             Fragment fragment = new ResultQrFragment();

@@ -47,7 +47,6 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
         imageViewQr = view.findViewById(R.id.imageViewQrResult)
         textViewResult = view.findViewById(R.id.textViewResult)
 
-        val buttonSave = view.findViewById<Button>(R.id.buttonSave)
         val buttonPickColor = view.findViewById<Button>(R.id.buttonPickColor)
 
         text = arguments?.getString("result_text") ?: ""

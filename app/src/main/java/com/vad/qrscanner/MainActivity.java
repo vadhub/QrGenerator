@@ -50,13 +50,12 @@ import com.vad.qrscanner.domain.FileUtils;
 import com.vad.qrscanner.domain.QRTools;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
-import com.vad.qrscanner.fragments.ResultFragment;
+import com.vad.qrscanner.fragments.ResultQrFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
-import com.vad.qrscanner.result.ResultQrActivity;
 
 import java.util.Objects;
 
@@ -161,22 +160,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
                 if (result.getContents() != null) {
-                    Bundle args = new Bundle();
-                    args.putString("content", result.getContents());
-                    Fragment fragmentResult = new ResultFragment();
-                    fragmentResult.setArguments(args);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
+                    startResult(result.getContents());
                 }
             });
 
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
-                Bundle args = new Bundle();
                 String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
-                args.putString("content", content);
-                Fragment fragmentResult = new ResultFragment();
-                fragmentResult.setArguments(args);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
+                startResult(content);
             });
 
     @SuppressLint("SuspiciousIndentation")
@@ -285,14 +276,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
                         double lat = location.getLatitude();
                         double lon = location.getLongitude();
 
-                        startResult(lat, lon);
+                        startResult(lat+", "  +lon);
                     } else {
                         LocationCallback callback = new LocationCallback() {
                             @Override
                             public void onLocationResult(@NonNull LocationResult locationResult) {
                                 super.onLocationResult(locationResult);
                                 Location loc = locationResult.getLastLocation();
-                                startResult(loc.getLatitude(), loc.getLongitude());
+                                startResult(loc.getLatitude()+", "+ loc.getLongitude());
                                 fusedLocationProviderClient.removeLocationUpdates(this);
                             }
                         };
@@ -315,11 +306,12 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         return locationRequest;
     }
 
-    private void startResult(double lat, double lon) {
-        String str = lat + ", " + lon;
-        Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
-        intent.putExtra("result_text", str);
-        startActivity(intent);
+    private void startResult(String content) {
+        Bundle args = new Bundle();
+        args.putString("content", content);
+        Fragment fragmentResult = new ResultQrFragment();
+        fragmentResult.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
     }
 
 

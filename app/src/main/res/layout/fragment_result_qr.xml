@@ -9,7 +9,7 @@
         android:id="@+id/cardViewRes"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintBottom_toTopOf="@+id/buttonPickColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewResult1"
@@ -23,18 +23,6 @@
             app:srcCompat="@drawable/ic_launcher_foreground" />
     </androidx.cardview.widget.CardView>
 
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        style="@style/btnStyle"
-        android:onClick="onSaveQrClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/buttonPickColor"
         style="@style/btnStyle"
@@ -43,7 +31,7 @@
         android:onClick="onPickColor"
         android:text="color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonSave"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
