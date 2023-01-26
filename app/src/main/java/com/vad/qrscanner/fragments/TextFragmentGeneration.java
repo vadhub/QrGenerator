@@ -10,15 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.vad.qrscanner.R;
+import com.vad.qrscanner.navigation.CustomAction;
+import com.vad.qrscanner.navigation.HasCustomAction;
+import com.vad.qrscanner.navigation.HasCustomTitle;
+import com.vad.qrscanner.navigation.Navigator;
 import com.vad.qrscanner.result.ResultQrActivity;
 
-public class TextFragmentGeneration extends Fragment {
+public class TextFragmentGeneration extends Fragment implements HasCustomTitle, HasCustomAction {
 
     private EditText editText;
-
+    private String str;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class TextFragmentGeneration extends Fragment {
         editText = (EditText) v.findViewById(R.id.editTextText);
 
         btnGenerate.setOnClickListener(view -> {
-            String str = editText.getText().toString();
+            str = editText.getText().toString();
 
             if(!str.equals("")){
                 Intent intentRes = new Intent(getContext(), ResultQrActivity.class);
@@ -41,5 +46,22 @@ public class TextFragmentGeneration extends Fragment {
 
         });
         return v;
+    }
+
+    @NonNull
+    @Override
+    public CustomAction setCustomAction(@NonNull Navigator navigator) {
+        return new CustomAction(R.drawable.ic_baseline_done_24, () -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("result_text", str);
+            Fragment fragment = new ResultQrFragment();
+            fragment.setArguments(bundle);
+            navigator.startFragment(fragment);
+        });
+    }
+
+    @Override
+    public int getTitle() {
+        return R.string.fragment_text;
     }
 }

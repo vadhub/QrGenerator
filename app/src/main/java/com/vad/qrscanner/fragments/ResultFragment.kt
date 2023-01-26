@@ -12,9 +12,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
+import com.vad.qrscanner.navigation.HasCustomTitle
 
 
-class ResultFragment : Fragment() {
+class ResultFragment : Fragment(), HasCustomTitle {
 
     private lateinit var thisContext: Context
 
@@ -48,4 +49,6 @@ class ResultFragment : Fragment() {
             Toast.makeText(thisContext, "text copied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun getTitle(): Int = R.string.fragment_result
 }

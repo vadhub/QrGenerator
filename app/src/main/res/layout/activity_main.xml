@@ -7,6 +7,18 @@
     android:background="@color/background"
     tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/blue_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIconTint="@color/white"
+        app:title="ScreenTitle"
+        app:titleTextColor="@color/white" />
+
     <FrameLayout
         android:id="@+id/frame_replacer"
         android:layout_width="0dp"

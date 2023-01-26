@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,9 +23,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -40,18 +46,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+import com.vad.qrscanner.domain.FileUtils;
+import com.vad.qrscanner.domain.QRTools;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
+import com.vad.qrscanner.navigation.CustomAction;
+import com.vad.qrscanner.navigation.HasCustomAction;
+import com.vad.qrscanner.navigation.HasCustomTitle;
+import com.vad.qrscanner.navigation.Navigator;
 import com.vad.qrscanner.result.ResultQrActivity;
 
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements Navigator {
 
     private LocationManager mLocationManager;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private Common common;
+    private Toolbar toolbar;
 
     public static final int REQUEST_CHECK_SETTINGS = 15232;
     public static final int LOCATION_PERMISSION_CODE = 15032;
@@ -72,12 +86,65 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
     }
 
+    private final FragmentManager.FragmentLifecycleCallbacks fragmentListener = new FragmentManager.FragmentLifecycleCallbacks() {
+        @Override
+        public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull View v, @Nullable Bundle savedInstanceState) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState);
+            updateOnUI();
+        }
+
+        @Override
+        public void onFragmentViewDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
+            super.onFragmentViewDestroyed(fm, f);
+            updateOnUI();
+        }
+    };
+
+
+    private Fragment getCurrentFragment() {
+        return getSupportFragmentManager().findFragmentById(R.id.frame_replacer);
+    }
+
+    private void updateOnUI() {
+        Fragment fragment = getCurrentFragment();
+
+        if (fragment instanceof HasCustomTitle) {
+            toolbar.setTitle(((HasCustomTitle) fragment).getTitle());
+        }
+
+        if (fragment instanceof HasCustomAction) {
+            createCustomToolbarAction(((HasCustomAction)fragment).setCustomAction(this));
+        } else {
+            toolbar.getMenu().clear();
+        }
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount() > 0);
+    }
+
+    @SuppressLint("ResourceType")
+    private void createCustomToolbarAction(CustomAction customActionFragment) {
+        toolbar.getMenu().clear();
+
+        Drawable iconDrawable = DrawableCompat.wrap(Objects.requireNonNull(ContextCompat.getDrawable(this, customActionFragment.getIcon())));
+        iconDrawable.setTint(Color.WHITE);
+        MenuItem menuItem = toolbar.getMenu().add("");
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuItem.setIcon(iconDrawable);
+        menuItem.setOnMenuItemClickListener(menuItem1 -> {
+            customActionFragment.getAction().run();
+            return true;
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        common = Common.getInstance();
 
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        Common common = Common.getInstance();
         common.mGetContent = mGetContent;
 
         BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -86,13 +153,14 @@ public class MainActivity extends AppCompatActivity {
 
         navigationView.setOnNavigationItemSelectedListener(navListener);
 
+        getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
     }
 
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
-                if(result.getContents() != null) {
+                if (result.getContents() != null) {
                     Bundle args = new Bundle();
                     args.putString("content", result.getContents());
                     Fragment fragmentResult = new ResultFragment();
@@ -116,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment selected = null;
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.phone_nav:
                 selected = new PhoneFragmentGeneration();
                 break;
@@ -139,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        if(selected!=null) getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
+        if (selected != null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
         return true;
     };
 
@@ -208,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Location> task) {
 
                     Location location = null;
-                    if(task.isSuccessful() && task.getResult()!=null){
+                    if (task.isSuccessful() && task.getResult() != null) {
                         location = task.getResult();
                     }
 
@@ -223,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onLocationResult(@NonNull LocationResult locationResult) {
                                 super.onLocationResult(locationResult);
                                 Location loc = locationResult.getLastLocation();
-                                startResult(loc.getLatitude(),loc.getLongitude());
+                                startResult(loc.getLatitude(), loc.getLongitude());
                                 fusedLocationProviderClient.removeLocationUpdates(this);
                             }
                         };
@@ -232,13 +301,13 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-        }else{
+        } else {
             checkPermission();
         }
 
     }
 
-    private LocationRequest getLocationRequest(){
+    private LocationRequest getLocationRequest() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(1000);
@@ -246,12 +315,20 @@ public class MainActivity extends AppCompatActivity {
         return locationRequest;
     }
 
-    private void startResult(double lat, double lon){
-        String str = lat+", "+lon;
+    private void startResult(double lat, double lon) {
+        String str = lat + ", " + lon;
         Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
         intent.putExtra("result_text", str);
         startActivity(intent);
     }
 
 
+    @Override
+    public void startFragment(@NonNull Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.frame_replacer, fragment)
+                .commit();
+    }
 }

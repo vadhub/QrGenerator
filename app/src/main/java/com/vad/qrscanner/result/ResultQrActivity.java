@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vad.qrscanner.QRTools;
+import com.vad.qrscanner.domain.QRTools;
 import com.vad.qrscanner.R;
 
 import dev.sasikanth.colorsheet.ColorSheet;
@@ -36,8 +36,6 @@ public class ResultQrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_qr);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.save));
 
         imageViewQr = (ImageView) findViewById(R.id.imageViewQrResult);
@@ -53,7 +51,6 @@ public class ResultQrActivity extends AppCompatActivity {
         for (int i = 0; i < res.length; i++) {
             colors[i] = Color.parseColor(res[i]);
         }
-
 
         imageViewQr.setImageBitmap(bitmapQr);
         textViewResult.setText(text);

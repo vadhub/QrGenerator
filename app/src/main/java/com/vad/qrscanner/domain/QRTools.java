@@ -1,4 +1,4 @@
-package com.vad.qrscanner;
+package com.vad.qrscanner.domain;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
