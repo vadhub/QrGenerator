@@ -5,7 +5,7 @@
     <string name="permission_message_body">Acceder a buena ubicación</string>
     <string name="permission_ok">otorgado</string>
     <string name="permission_deny">negar</string>
-    <string name="phone">teléfono</string>
+    <string name="contact">teléfono</string>
     <string name="text">texto</string>
     <string name="link">enlace</string>
     <string name="location">localización</string>

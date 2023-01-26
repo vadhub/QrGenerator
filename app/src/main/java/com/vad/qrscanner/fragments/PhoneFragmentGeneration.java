@@ -20,7 +20,10 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
 
     private EditText editTextPhone;
     private EditText editTextName;
-    private EditText editTextLastname;
+    private EditText editTextOrganization;
+    private EditText editTextAddress;
+    private EditText editTextEmail;
+    private EditText editTextNotes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,7 +31,10 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
         View v = inflater.inflate(R.layout.fragment_phone_generation, container, false);
         editTextPhone = (EditText) v.findViewById(R.id.editTextPhone);
         editTextName = (EditText) v.findViewById(R.id.editTextTextName);
-        editTextLastname = (EditText) v.findViewById(R.id.editTextTextLastname);
+        editTextOrganization = (EditText) v.findViewById(R.id.editTextOrganization);
+        editTextAddress = (EditText) v.findViewById(R.id.editTextAddress);
+        editTextEmail = (EditText) v.findViewById(R.id.editTextEmail);
+        editTextNotes = (EditText) v.findViewById(R.id.editTextNotes);
         return v;
     }
 
@@ -37,14 +43,21 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
     public CustomAction setCustomAction(@NonNull Navigator navigator) {
         return new CustomAction(R.drawable.ic_baseline_done_24, () -> {
             CheckEmptyText.Companion.check(
-                    new EditText[]{editTextPhone, editTextName, editTextLastname}, () -> {
+                    new EditText[]{editTextPhone, editTextName, editTextOrganization,
+                            editTextAddress, editTextEmail, editTextNotes}, () -> {
                         String str =
                                 getString(R.string.phone_number_text) +
                                         editTextPhone.getText().toString() +
                                         getString(R.string.name_text) +
-                                        editTextName.getText().toString()+
-                                        getString(R.string.lastname_text) +
-                                        editTextLastname.getText().toString();
+                                        editTextName.getText().toString() +", "+
+                                        getString(R.string.organization) + ": " +
+                                        editTextOrganization.getText().toString()+", " +
+                                        getString(R.string.address )+ ": "  +
+                                        editTextAddress.getText().toString() +", "+
+                                        getString(R.string.email) + ": " +
+                                        editTextEmail.getText().toString() +", "+
+                                        getString(R.string.notes) + ": "  +
+                                        editTextNotes.getText().toString();
 
                         Bundle bundle = new Bundle();
                         bundle.putString("result_text", str);

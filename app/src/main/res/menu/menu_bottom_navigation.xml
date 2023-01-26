@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/phone_nav"
-        android:icon="@drawable/ic_baseline_local_phone_24"
-        android:title="@string/phone"
+        android:icon="@drawable/ic_baseline_contact_page_24"
+        android:title="@string/contact"
         />
 
     <item

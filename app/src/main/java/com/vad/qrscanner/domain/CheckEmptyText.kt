@@ -8,6 +8,7 @@ class CheckEmptyText {
             editText.forEach {
                 if (it.text.isEmpty()) {
                     it.error = "empty text"
+                    return
                 } else {
                     runnable.run()
                     return

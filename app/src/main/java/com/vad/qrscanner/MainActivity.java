@@ -149,6 +149,12 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount() > 0);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     @SuppressLint("ResourceType")
     private void createCustomToolbarAction(CustomAction customActionFragment) {
         toolbar.getMenu().clear();

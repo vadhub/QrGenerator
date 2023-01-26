@@ -64,7 +64,7 @@ public class CustomScannerActivity extends AppCompatActivity {
         return barcodeScannerView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    public void switchFlashlight(View view) {
+    public void chooseImage(View view) {
         common.start();
         finish();
     }

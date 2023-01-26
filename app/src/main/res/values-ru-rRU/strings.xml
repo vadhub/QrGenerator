@@ -5,7 +5,7 @@
     <string name="permission_message_body">Доступ к точному местоположению</string>
     <string name="permission_ok">предоставляется</string>
     <string name="permission_deny">отказать</string>
-    <string name="phone">телефон</string>
+    <string name="contact">телефон</string>
     <string name="text">текст</string>
     <string name="link">ссылка</string>
     <string name="location">местоположение</string>
