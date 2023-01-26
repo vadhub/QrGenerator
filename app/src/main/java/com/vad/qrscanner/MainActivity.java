@@ -236,12 +236,9 @@ public class MainActivity extends AppCompatActivity{
 
     private void startResult(double lat, double lon){
         String str = lat+", "+lon;
-        Bitmap bitmap = QRGenerator.generate(str);
         Intent intent = new Intent(MainActivity.this, ResultQrActivity.class);
-        intent.putExtra("result_qr", bitmap);
-        intent.putExtra("result_text", getString(R.string.location_title)+str);
+        intent.putExtra("result_text", str);
         startActivity(intent);
-
     }
 
 

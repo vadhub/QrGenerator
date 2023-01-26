@@ -1,17 +1,28 @@
 package com.vad.qrscanner;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
+import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-public class QRGenerator {
-    public static Bitmap generate(String textToQr){
+public class QRTools {
+    public static Bitmap generate(String textToQr) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
@@ -25,7 +36,7 @@ public class QRGenerator {
         return bitmap;
     }
 
-    public static Bitmap changeColor(int color, String content){
+    public static Bitmap changeColor(int color, String content) {
         QRCodeWriter writer = new QRCodeWriter();
         try {
             BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512);
@@ -43,5 +54,27 @@ public class QRGenerator {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static String decodeQRImage(String path) {
+        Bitmap bMap = BitmapFactory.decodeFile(path);
+        String decoded = null;
+
+        int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
+        bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),
+                bMap.getHeight());
+        LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(),
+                bMap.getHeight(), intArray);
+        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+        Reader reader = new QRCodeReader();
+        try {
+            Result result = reader.decode(bitmap);
+            decoded = result.getText();
+        } catch (NotFoundException | ChecksumException | FormatException e) {
+            e.printStackTrace();
+        }
+        return decoded;
     }
 }

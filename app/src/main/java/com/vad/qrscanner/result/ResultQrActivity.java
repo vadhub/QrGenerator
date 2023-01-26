@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vad.qrscanner.QRGenerator;
+import com.vad.qrscanner.QRTools;
 import com.vad.qrscanner.R;
 
 import dev.sasikanth.colorsheet.ColorSheet;
@@ -45,7 +45,7 @@ public class ResultQrActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         text = intent.getStringExtra("result_text");
-        bitmapQr = QRGenerator.generate(text);
+        bitmapQr = QRTools.generate(text);
 
         String[] res = getResources().getStringArray(R.array.colors);
         colors = new int[res.length];
@@ -66,7 +66,7 @@ public class ResultQrActivity extends AppCompatActivity {
     public void onPickColor(View view) {
         new ColorSheet().colorPicker(colors, 0,true,
                 c -> {
-                    imageViewQr.setImageBitmap(QRGenerator.changeColor(c, text));
+                    imageViewQr.setImageBitmap(QRTools.changeColor(c, text));
                     textViewResult.setText(text);
                     return null;
                 }
