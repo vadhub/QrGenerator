@@ -71,11 +71,9 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
                 textViewResult.text = text
             }.show(requireActivity().supportFragmentManager)
         }
-
-
     }
 
-    override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_done_24) {
+    override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_save_24) {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             val outFile: String = MediaStore.Images.Media.insertImage(
                 context?.contentResolver,

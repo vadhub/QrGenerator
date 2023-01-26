@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import com.vad.qrscanner.domain.FileUtils;
 import com.vad.qrscanner.domain.QRTools;
 import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
+import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.ResultQrFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.navigation.CustomAction;
@@ -69,6 +71,27 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     public static final int REQUEST_CHECK_SETTINGS = 15232;
     public static final int LOCATION_PERMISSION_CODE = 15032;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+
+        Common common = Common.getInstance();
+        common.mGetContent = mGetContent;
+
+        BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        navigationView.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
+    }
+
     private void checkPermission() {
         if (
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -79,6 +102,12 @@ public class MainActivity extends AppCompatActivity implements Navigator {
             requestGPSSettings();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        updateOnUI();
+        return true;
     }
 
     private void requestLocationPermission() {
@@ -134,28 +163,6 @@ public class MainActivity extends AppCompatActivity implements Navigator {
             return true;
         });
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-
-        Common common = Common.getInstance();
-        common.mGetContent = mGetContent;
-
-        BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        navigationView.setOnNavigationItemSelectedListener(navListener);
-
-        getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
-    }
-
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
@@ -276,14 +283,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
                         double lat = location.getLatitude();
                         double lon = location.getLongitude();
 
-                        startResult(lat+", "  +lon);
+                        startResultQR(lat+", "  +lon);
                     } else {
                         LocationCallback callback = new LocationCallback() {
                             @Override
                             public void onLocationResult(@NonNull LocationResult locationResult) {
                                 super.onLocationResult(locationResult);
                                 Location loc = locationResult.getLastLocation();
-                                startResult(loc.getLatitude()+", "+ loc.getLongitude());
+                                startResultQR(loc.getLatitude()+", "+ loc.getLongitude());
                                 fusedLocationProviderClient.removeLocationUpdates(this);
                             }
                         };
@@ -309,6 +316,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     private void startResult(String content) {
         Bundle args = new Bundle();
         args.putString("content", content);
+        Fragment fragmentResult = new ResultFragment();
+        fragmentResult.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
+    }
+
+    private void startResultQR(String content) {
+        Bundle args = new Bundle();
+        args.putString("result_text", content);
         Fragment fragmentResult = new ResultQrFragment();
         fragmentResult.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
