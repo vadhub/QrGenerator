@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -44,10 +43,7 @@ import com.vad.qrscanner.fragments.LocationFragmentGeneration;
 import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
-import com.vad.qrscanner.result.CaptureActivityImpl;
 import com.vad.qrscanner.result.ResultQrActivity;
-
-import dev.sasikanth.colorsheet.ColorSheet;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -126,7 +122,7 @@ public class MainActivity extends AppCompatActivity{
                 ScanOptions scanOptions = new ScanOptions();
                 scanOptions.setOrientationLocked(true);
                 scanOptions.setPrompt("Scan a qr");
-                scanOptions.setCaptureActivity(CaptureActivityImpl.class);
+                scanOptions.setCaptureActivity(CustomScannerActivity.class);
                 barcodeLauncher.launch(scanOptions);
                 break;
         }

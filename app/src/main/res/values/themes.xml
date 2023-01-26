@@ -37,4 +37,13 @@
         <item name="cardElevation">2sp</item>
 
     </style>
+
+    <style name="Theme.QrScanner.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.QrScanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.QrScanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
