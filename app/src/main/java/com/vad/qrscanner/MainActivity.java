@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,10 +47,11 @@ import com.vad.qrscanner.fragments.TextFragmentGeneration;
 import com.vad.qrscanner.result.ResultQrActivity;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private LocationManager mLocationManager;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private Common common;
 
     public static final int REQUEST_CHECK_SETTINGS = 15232;
     public static final int LOCATION_PERMISSION_CODE = 15032;
@@ -74,7 +76,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        common = Common.getInstance();
 
+        common.mGetContent = mGetContent;
 
         BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -97,6 +101,17 @@ public class MainActivity extends AppCompatActivity{
                     fragmentResult.setArguments(args);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
                 }
+            });
+
+    private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            uri -> {
+                Bundle args = new Bundle();
+                System.out.println(FileUtils.getPath(uri, this));
+                String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
+                args.putString("content", content);
+                Fragment fragmentResult = new ResultFragment();
+                fragmentResult.setArguments(args);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
             });
 
     @SuppressLint("SuspiciousIndentation")
