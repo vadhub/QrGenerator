@@ -18,12 +18,7 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="editText">
-        <item name="android:layout_marginBottom">10sp</item>
-        <item name="android:layout_marginStart">10sp</item>
-        <item name="android:layout_marginEnd">10sp</item>
-        <item name="android:layout_marginTop">10sp</item>
-    </style>
+    <style name="editText"/>
 
     <style name="btnStyle">
         <item name="android:layout_marginBottom">8sp</item>
@@ -42,7 +37,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="darkThemeText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
     <style name="Theme.QrScanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.QrScanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

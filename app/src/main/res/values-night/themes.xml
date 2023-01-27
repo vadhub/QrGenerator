@@ -2,15 +2,50 @@
     <!-- Base application theme. -->
     <style name="Theme.QrScanner" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/blue_200</item>
+        <item name="colorPrimaryVariant">@color/blue_300</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">#f50057</item>
+        <item name="colorSecondaryVariant">#F73378</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="textViewer">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="editText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="btnStyle">
+        <item name="android:layout_marginBottom">8sp</item>
+    </style>
+
+    <style name="cardViewStyle">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">2sp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="Theme.QrScanner.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="darkThemeText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">@color/black</item>
+        <item name="boxStrokeColor">@color/cardview_dark_background</item>
+    </style>
+
+    <style name="Theme.QrScanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.QrScanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

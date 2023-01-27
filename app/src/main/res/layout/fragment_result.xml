@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
+    android:background="@color/background"
     tools:context=".fragments.ResultFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -13,12 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true"
+        android:textColorHint="@color/black"
+        app:boxStrokeColor="@color/black"
         app:errorIconDrawable="@color/design_default_color_error">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/resultQr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:hint="@string/result"
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
