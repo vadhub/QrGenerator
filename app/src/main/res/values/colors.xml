@@ -20,8 +20,10 @@
         <item>#FF000000</item>
         <item>#8BC34A</item>
         <item>#FFEB3B</item>
-        <item>#583BFF</item>
+        <item>#0048FF</item>
         <item>#48FF3B</item>
         <item>#FF9800</item>
+        <item>#D81B60</item>
+        <item>#205A00</item>
     </string-array>
 </resources>

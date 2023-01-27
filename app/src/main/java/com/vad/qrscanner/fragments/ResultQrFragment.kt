@@ -64,7 +64,7 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
         buttonPickColor.setOnClickListener {
             ColorSheet().colorPicker(
-                colors = colors, noColorOption = true
+                colors = colors
             ) { c ->
                 bitmapQr = QRTools.changeColor(c, text)
                 imageViewQr.setImageBitmap(bitmapQr)
@@ -80,7 +80,7 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
                 bitmapQr, "" + System.currentTimeMillis(), ""
             )
 
-            Toast.makeText(context, getString(R.string.save_to) + outFile, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.save_to) + "Gallery", Toast.LENGTH_LONG).show()
         } else {
             val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             ActivityCompat.requestPermissions(requireActivity(), permissions, REQUEST_CODE)
