@@ -41,4 +41,5 @@
     <string name="color">cor</string>
     <string name="required">Este é um campo obrigatório</string>
     <string name="textCopied">texto copiado</string>
+    <string name="paste">colar</string>
 </resources>

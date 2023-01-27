@@ -42,4 +42,5 @@
     <string name="color">цвет</string>
     <string name="required">Это обязательное поле</string>
     <string name="textCopied">текст скопирован</string>
+    <string name="paste">вставить</string>
 </resources>

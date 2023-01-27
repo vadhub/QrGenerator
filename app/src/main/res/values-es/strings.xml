@@ -41,4 +41,5 @@
     <string name="result">resultado</string>
     <string name="required">Este es un campo obligatorio</string>
     <string name="textCopied">texto copiado</string>
+    <string name="paste">pegar</string>
 </resources>
