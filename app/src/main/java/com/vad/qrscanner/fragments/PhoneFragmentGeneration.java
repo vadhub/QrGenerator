@@ -42,7 +42,7 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
     @Override
     public CustomAction setCustomAction(@NonNull Navigator navigator) {
         return new CustomAction(R.drawable.ic_baseline_done_24, () -> {
-            CheckEmptyText.Companion.check(
+            CheckEmptyText.Companion.check(getContext().getString(R.string.required),
                     new EditText[]{editTextPhone, editTextName, editTextOrganization,
                             editTextAddress, editTextEmail, editTextNotes}, () -> {
                         String str =

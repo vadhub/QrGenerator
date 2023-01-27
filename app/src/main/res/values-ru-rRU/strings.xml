@@ -18,14 +18,28 @@
     <string name="name">Имя</string>
     <string name="lastname">Фамилия</string>
     <string name="please_waiting">Пожалуйста подождите</string>
-    <string name="only_200_characters">*Всего 200 символов</string>
+
     <string name="access_location">Доступ к местоположению</string>
     <string name="permission_denied">В доступе отказано</string>
-    <string name="location_title">Ваше местоположение (Lat,Lon):</string>
+    <string name="location_title">Ваше местоположение (Lat,Lon) </string>
     <string name="unable_gsp">GPS не работает</string>
     <string name="phone_number_text">телефонный номер:</string>
     <string name="name_text">, имя:</string>
     <string name="lastname_text">, фамилия:</string>
     <string name="enter_text_pl">Введите текст!</string>
     <string name="save_to">Изображение сохранено в</string>
+    <string name="address">Адрес</string>
+    <string name="organization">Организация</string>
+    <string name="notes">Примечание</string>
+    <string name="change_color">Изменить цвет</string>
+    <string name="scanner">сканер</string>
+    <string name="result">Результат</string>
+    <string name="fragment_location">Место нахождения</string>
+    <string name="fragment_contact">Контакт</string>
+    <string name="fragment_result">Результат сканирования</string>
+    <string name="fragment_result_qr">Сгенерировано</string>
+    <string name="fragment_text">Текст</string>
+    <string name="color">цвет</string>
+    <string name="required">Это обязательное поле</string>
+    <string name="textCopied">текст скопирован</string>
 </resources>

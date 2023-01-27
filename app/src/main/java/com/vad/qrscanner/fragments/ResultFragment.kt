@@ -46,7 +46,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
             val clip = ClipData.newPlainText("copyLable", result.text.toString())
             clipboard!!.setPrimaryClip(clip)
 
-            Toast.makeText(thisContext, "text copied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(thisContext, thisContext.getText(R.string.textCopied), Toast.LENGTH_SHORT).show()
         }
     }
 

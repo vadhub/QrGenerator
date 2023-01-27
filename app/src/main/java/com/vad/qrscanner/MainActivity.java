@@ -179,8 +179,10 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
-                String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
-                startResult(content);
+                if (uri != null) {
+                    String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
+                    startResult(content);
+                }
             });
 
     @SuppressLint("SuspiciousIndentation")
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements Navigator {
             case R.id.scanner_nav:
                 ScanOptions scanOptions = new ScanOptions();
                 scanOptions.setOrientationLocked(true);
-                scanOptions.setPrompt("Scan a qr");
+                scanOptions.setPrompt("");
                 scanOptions.setCaptureActivity(CustomScannerActivity.class);
                 barcodeLauncher.launch(scanOptions);
                 break;
