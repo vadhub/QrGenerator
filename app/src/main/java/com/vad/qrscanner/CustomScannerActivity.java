@@ -66,7 +66,7 @@ public class CustomScannerActivity extends AppCompatActivity {
 
     public void chooseImage(View view) {
         common.start();
-        //finish();
+        finish();
     }
 
     @Override

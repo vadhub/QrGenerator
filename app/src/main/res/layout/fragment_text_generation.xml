@@ -11,7 +11,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:layout_marginBottom="8dp"
         style="@style/cardViewStyle">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:errorEnabled="true"
-            android:padding="4dp"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
             app:errorIconDrawable="@color/design_default_color_error">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,13 @@
                 android:paddingHorizontal="8dp"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/clipboardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:text="@string/paste"/>
     </androidx.cardview.widget.CardView>
 
 </FrameLayout>

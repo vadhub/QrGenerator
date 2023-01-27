@@ -43,6 +43,7 @@
     <string name="color">color</string>
     <string name="required">This a required field</string>
     <string name="textCopied">text copied</string>
+    <string name="paste">paste</string>
 
 
 </resources>
