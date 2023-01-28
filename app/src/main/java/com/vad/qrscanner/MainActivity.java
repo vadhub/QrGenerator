@@ -58,6 +58,9 @@ import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
+import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdRequest;
 
 import java.util.Objects;
 
@@ -78,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+
+        BannerAdView mBanner = (BannerAdView) findViewById(R.id.adView);
+        mBanner.setAdUnitId("R-M-2167912-1");
+        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBanner.loadAd(adRequest);
 
         Common common = Common.getInstance();
         common.mGetContent = mGetContent;

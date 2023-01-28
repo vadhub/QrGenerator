@@ -11,8 +11,8 @@ android {
         applicationId "com.vad.qrscanner"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,7 +43,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-
+    implementation 'com.yandex.android:mobileads:5.5.0'
     implementation "dev.sasikanth:colorsheet:1.0.1"
     implementation "androidx.core:core-ktx:1.9.0"
     //noinspection GradleDependency
