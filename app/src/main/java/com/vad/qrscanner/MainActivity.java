@@ -54,6 +54,7 @@ import com.vad.qrscanner.fragments.PhoneFragmentGeneration;
 import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.ResultQrFragment;
 import com.vad.qrscanner.fragments.TextFragmentGeneration;
+import com.vad.qrscanner.fragments.menu.MenuFragment;
 import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomTitle;
@@ -98,12 +99,13 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         navigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new MenuFragment()).commit();
 
-        ScanOptions scanOptions = new ScanOptions();
-        scanOptions.setOrientationLocked(true);
-        scanOptions.setPrompt("");
-        scanOptions.setCaptureActivity(CustomScannerActivity.class);
-        barcodeLauncher.launch(scanOptions);
+//        ScanOptions scanOptions = new ScanOptions();
+//        scanOptions.setOrientationLocked(true);
+//        scanOptions.setPrompt("");
+//        scanOptions.setCaptureActivity(CustomScannerActivity.class);
+//        barcodeLauncher.launch(scanOptions);
     }
 
     private void checkPermission() {

@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.vad.qrscanner.R
 
 
-class MenuAdapter(private val menuItem: List<Pair<Drawable, Int>>) : RecyclerView.Adapter<MenuAdapter.MyViewHolder>() {
+class MenuAdapter(private val menuItem: List<Pair<Drawable, String>>) : RecyclerView.Adapter<MenuAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.fragment_menu, parent, false))
+        MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.menu_item, parent, false))
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.image.setImageDrawable(menuItem.get(position).first)
