@@ -44,6 +44,8 @@
     <string name="required">This a required field</string>
     <string name="textCopied">text copied</string>
     <string name="paste">paste</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

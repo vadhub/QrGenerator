@@ -98,7 +98,12 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         navigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new PhoneFragmentGeneration()).commit();
+
+        ScanOptions scanOptions = new ScanOptions();
+        scanOptions.setOrientationLocked(true);
+        scanOptions.setPrompt("");
+        scanOptions.setCaptureActivity(CustomScannerActivity.class);
+        barcodeLauncher.launch(scanOptions);
     }
 
     private void checkPermission() {
