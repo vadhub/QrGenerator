@@ -1,4 +1,4 @@
-package com.vad.qrscanner.fragments
+package com.vad.qrscanner.fragments.menu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
