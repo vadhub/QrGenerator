@@ -1,5 +1,6 @@
 package com.vad.qrscanner.fragments.menu
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +8,31 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
+import com.vad.qrscanner.CustomScannerActivity
 import com.vad.qrscanner.R
+import com.vad.qrscanner.fragments.LocationFragmentGeneration
+import com.vad.qrscanner.fragments.PhoneFragmentGeneration
+import com.vad.qrscanner.fragments.ResultFragment
+import com.vad.qrscanner.fragments.TextFragmentGeneration
+import com.vad.qrscanner.navigation.HasCustomTitle
+import com.vad.qrscanner.navigation.Navigator
 
-class MenuFragment : Fragment() {
+class MenuFragment : Fragment(), HasCustomTitle {
+
+    private lateinit var navigator: Navigator
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigator = activity as Navigator
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_menu, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_menu, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,5 +51,48 @@ class MenuFragment : Fragment() {
 
         val adapter = MenuAdapter(list)
         recyclerView.adapter = adapter
+
+        adapter.setOnItemMenuClickListener(object: MenuAdapter.OnItemMenuClickListener{
+            override fun onClick(position: Int) {
+                navigator.startFragment(getFragments(position))
+            }
+        })
     }
+
+    fun getFragments(id: Int): Fragment {
+        when (id) {
+            0 -> startQrScanner()
+            1 -> return PhoneFragmentGeneration()
+            2 -> return TextFragmentGeneration()
+            3 -> return LocationFragmentGeneration()
+            else -> startQrScanner()
+        }
+        return this
+    }
+
+    private val barcodeLauncher = registerForActivityResult(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents != null) {
+            startResult(result.contents)
+        }
+    }
+
+    private fun startQrScanner() {
+        val scanOptions = ScanOptions()
+        scanOptions.setOrientationLocked(true)
+        scanOptions.setPrompt("")
+        scanOptions.captureActivity = CustomScannerActivity::class.java
+        barcodeLauncher.launch(scanOptions)
+    }
+
+    private fun startResult(content: String) {
+        val args = Bundle()
+        args.putString("content", content)
+        val fragmentResult: Fragment = ResultFragment()
+        fragmentResult.arguments = args
+        navigator.startFragment(fragmentResult)
+    }
+
+    override fun getTitle() = R.string.menu
 }

@@ -92,11 +92,8 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         Common common = Common.getInstance();
         common.mGetContent = mGetContent;
 
-        BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        navigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new MenuFragment()).commit();
@@ -186,13 +183,6 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         });
     }
 
-    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
-            result -> {
-                if (result.getContents() != null) {
-                    startResult(result.getContents());
-                }
-            });
-
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
@@ -200,39 +190,6 @@ public class MainActivity extends AppCompatActivity implements Navigator {
                     startResult(content);
                 }
             });
-
-    @SuppressLint("SuspiciousIndentation")
-    private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
-
-        Fragment selected = null;
-
-        switch (item.getItemId()) {
-            case R.id.phone_nav:
-                selected = new PhoneFragmentGeneration();
-                break;
-
-            case R.id.text_nav:
-                selected = new TextFragmentGeneration();
-                break;
-
-            case R.id.coord_nav:
-                selected = new LocationFragmentGeneration();
-                checkPermission();
-                break;
-
-            case R.id.scanner_nav:
-                ScanOptions scanOptions = new ScanOptions();
-                scanOptions.setOrientationLocked(true);
-                scanOptions.setPrompt("");
-                scanOptions.setCaptureActivity(CustomScannerActivity.class);
-                barcodeLauncher.launch(scanOptions);
-                break;
-        }
-
-        if (selected != null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, selected).commit();
-        return true;
-    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

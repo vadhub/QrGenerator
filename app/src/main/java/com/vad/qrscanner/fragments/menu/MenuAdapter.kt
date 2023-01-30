@@ -13,6 +13,16 @@ import com.vad.qrscanner.R
 
 class MenuAdapter(private val menuItem: List<Pair<Drawable, String>>) : RecyclerView.Adapter<MenuAdapter.MyViewHolder>() {
 
+    private lateinit var onItemMenuClickListener: OnItemMenuClickListener
+
+    interface OnItemMenuClickListener {
+        fun onClick(position: Int)
+    }
+
+    fun setOnItemMenuClickListener(onItemMenuClickListener: OnItemMenuClickListener) {
+        this.onItemMenuClickListener = onItemMenuClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.menu_item, parent, false))
 
@@ -23,10 +33,16 @@ class MenuAdapter(private val menuItem: List<Pair<Drawable, String>>) : Recycler
 
     override fun getItemCount() = menuItem.size
 
-    class MyViewHolder(item: View) : ViewHolder(item) {
+    inner class MyViewHolder(item: View) : ViewHolder(item) {
 
         val image = item.findViewById<ImageView>(R.id.menuImage)
         val text = item.findViewById<TextView>(R.id.menuTitle)
+
+        init {
+            item.setOnClickListener{
+                onItemMenuClickListener.onClick(adapterPosition)
+            }
+        }
 
     }
 }

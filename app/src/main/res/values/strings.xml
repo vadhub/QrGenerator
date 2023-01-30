@@ -52,5 +52,7 @@
         <item>Create QR location</item>
     </string-array>
 
+    <string name="menu">Menu</string>
+
 
 </resources>
