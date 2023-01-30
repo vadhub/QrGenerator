@@ -54,20 +54,18 @@ class MenuFragment : Fragment(), HasCustomTitle {
 
         adapter.setOnItemMenuClickListener(object: MenuAdapter.OnItemMenuClickListener{
             override fun onClick(position: Int) {
-                navigator.startFragment(getFragments(position))
+                getFragments(position)
             }
         })
     }
 
-    fun getFragments(id: Int): Fragment {
+    fun getFragments(id: Int) {
         when (id) {
             0 -> startQrScanner()
-            1 -> return PhoneFragmentGeneration()
-            2 -> return TextFragmentGeneration()
-            3 -> return LocationFragmentGeneration()
-            else -> startQrScanner()
+            1 -> navigator.startFragment(PhoneFragmentGeneration())
+            2 -> navigator.startFragment(TextFragmentGeneration())
+            3 -> navigator.startFragment(LocationFragmentGeneration())
         }
-        return this
     }
 
     private val barcodeLauncher = registerForActivityResult(

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -33,8 +34,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.vad.qrscanner.MainActivity;
@@ -43,25 +46,30 @@ import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
 
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 
 public class LocationFragmentGeneration extends Fragment implements HasCustomTitle  {
 
-    private LocationManager mLocationManager;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private GoogleApiClient googleApiClient;
+    private FusedLocationProviderClient fusedLocationClient;
     private Navigator navigator;
-    public static final int REQUEST_CHECK_SETTINGS = 15232;
+    public static final int GPS_PERMISSION = 15232;
     public static final int LOCATION_PERMISSION_CODE = 15032;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         navigator = (Navigator) context;
-        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
-        googleApiClient = new GoogleApiClient.Builder(context)
-                .addApi(LocationServices.API).build();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            display();
+        } else {
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION},
+                    GPS_PERMISSION);
+        }
     }
 
     @Override
@@ -70,122 +78,76 @@ public class LocationFragmentGeneration extends Fragment implements HasCustomTit
         return inflater.inflate(R.layout.fragment_location_generation, container, false);
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestGPSSettings();
+        if (requestCode == GPS_PERMISSION) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                display();
             } else {
-                Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Gps not granted", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CHECK_SETTINGS) {
-            if (resultCode == Activity.RESULT_OK) {
-                getLastLocation();
-            }
-        }
-    }
+    public void display() {
 
-    private void requestGPSSettings() {
-        googleApiClient.connect();
-
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(500);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        builder.setAlwaysShow(true);
-        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-        result.setResultCallback(result1 -> {
-            final Status status = result1.getStatus();
-            switch (status.getStatusCode()) {
-                case LocationSettingsStatusCodes.SUCCESS:
-                    Log.i("", "All location settings are satisfied.");
-                    getLastLocation();
-                    break;
-                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                    Log.i("", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
-                    try {
-                        status.startResolutionForResult(requireActivity(), REQUEST_CHECK_SETTINGS);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.e("Applicationsett", e.toString());
-                    }
-                    break;
-                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                    Toast.makeText(getContext(), getString(R.string.unable_gsp), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        });
-    }
-
-    private void checkPermission() {
-        if (
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Toast.makeText(getContext(), getResources().getString(R.string.access_location), Toast.LENGTH_SHORT).show();
-            requestLocationPermission();
-        } else {
-            requestGPSSettings();
-        }
-    }
-
-    private void requestLocationPermission() {
-        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-    }
-
-    @SuppressLint("MissingPermission")
-    private void getLastLocation() {
-
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-
-                    Location location = null;
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        location = task.getResult();
-                    }
-
-                    if (location != null) {
-                        double lat = location.getLatitude();
-                        double lon = location.getLongitude();
-
-                        startResultQR(lat+", "  +lon);
-                    } else {
-                        LocationCallback callback = new LocationCallback() {
-                            @Override
-                            public void onLocationResult(@NonNull LocationResult locationResult) {
-                                super.onLocationResult(locationResult);
-                                Location loc = locationResult.getLastLocation();
-                                startResultQR(loc.getLatitude()+", "+ loc.getLongitude());
-                                fusedLocationProviderClient.removeLocationUpdates(this);
-                            }
-                        };
-                        fusedLocationProviderClient.requestLocationUpdates(getLocationRequest(), callback, Looper.myLooper());
-                    }
-
-                }
-            });
-        } else {
-            checkPermission();
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
 
-    }
-
-    private LocationRequest getLocationRequest() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(1000);
-        return locationRequest;
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder locationSettingsRequestBuilder = new LocationSettingsRequest.Builder();
+        SettingsClient settingsClient = LocationServices.getSettingsClient(requireActivity());
+
+        Task<LocationSettingsResponse> taskCheckLocationSettings = settingsClient.checkLocationSettings(
+                locationSettingsRequestBuilder
+                        .addLocationRequest(locationRequest)
+                        .setAlwaysShow(true)
+                        .build()
+        );
+
+        taskCheckLocationSettings.addOnFailureListener(requireActivity(), e -> {
+            if (e instanceof ResolvableApiException){
+                try {
+                    ResolvableApiException resolvableApiException = (ResolvableApiException) e;
+                    resolvableApiException.startResolutionForResult(requireActivity(),
+                            LOCATION_PERMISSION_CODE);
+                } catch (IntentSender.SendIntentException sendIntentException) {
+                    sendIntentException.printStackTrace();
+                    Toast.makeText(requireContext(), "not available get GPS", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        fusedLocationClient.getLastLocation().addOnCompleteListener(task -> {
+            Location location = null;
+            if (task.isSuccessful() && task.getResult() != null) {
+                location = task.getResult();
+                startResultQR(location.getLatitude()+", "+ location.getLongitude());
+            }
+
+            if (location == null) {
+                LocationCallback callback = new LocationCallback() {
+                    @Override
+                    public void onLocationResult(@NonNull LocationResult locationResult) {
+                        super.onLocationResult(locationResult);
+                        Location loc = locationResult.getLastLocation();
+                        startResultQR(loc.getLatitude() + ", "+ loc.getLongitude());
+                        fusedLocationClient.removeLocationUpdates(this);
+                    }
+                };
+                fusedLocationClient.requestLocationUpdates(locationRequest, callback, Looper.getMainLooper());
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getContext(), "not available get GPS -", Toast.LENGTH_SHORT).show();
+        });
+
     }
 
 

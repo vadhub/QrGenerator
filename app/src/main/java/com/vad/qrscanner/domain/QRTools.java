@@ -69,7 +69,7 @@ public class QRTools {
     public static String decodeQRImage(String path) {
         Bitmap bMap = BitmapFactory.decodeFile(path);
         String decoded = null;
-
+        if (bMap==null) return "No decoding";
         int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),
                 bMap.getHeight());
