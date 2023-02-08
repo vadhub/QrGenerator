@@ -42,4 +42,25 @@
     <string name="required">Este é um campo obrigatório</string>
     <string name="textCopied">texto copiado</string>
     <string name="paste">colar</string>
+
+    <string-array name="item_menu">
+        <item>Leitor de QR</item>
+        <item>Criar um contato QR</item>
+        <item>Criar texto QR</item>
+        <item>Criando um local QR</item>
+        <item>Criação de QR Wi-Fi</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>WPA/WPA2</item>
+        <item>WEP</item>
+        <item>Nenhuma senha</item>
+    </string-array>
+
+    <string name="wifi">Wi-Fi</string>
+    <string name="menu">Cardápio</string>
+    <string name="hidden">escondido</string>
+    <string name="ssid_network_name">SSID/Nome da rede</string>
+    <string name="password">Senha</string>
+
 </resources>

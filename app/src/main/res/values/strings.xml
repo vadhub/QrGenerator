@@ -46,11 +46,11 @@
     <string name="paste">paste</string>
 
     <string-array name="item_menu">
-        <item>Scanner QR</item>
-        <item>Create QR contact</item>
+        <item>QR Scanner</item>
+        <item>Create a QR contact</item>
         <item>Create QR text</item>
-        <item>Create QR location</item>
-        <item>Create QR wifi</item>
+        <item>Creating a QR Location</item>
+        <item>Creation of QR Wi-Fi</item>
     </string-array>
 
     <string-array name="type">
@@ -64,7 +64,7 @@
     <string name="hidden">hidden</string>
     <string name="ssid_network_name">SSID/Network name</string>
     <string name="password">Password</string>
-    <string name="wifi">Wifi</string>
+    <string name="wifi">Wi-Fi</string>
 
 
 </resources>

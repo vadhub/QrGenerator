@@ -43,4 +43,25 @@
     <string name="required">Это обязательное поле</string>
     <string name="textCopied">текст скопирован</string>
     <string name="paste">вставить</string>
+
+    <string-array name="item_menu">
+        <item>QR-Сканнер</item>
+        <item>Создание QR-Контакта</item>
+        <item>Создание QR-текст</item>
+        <item>Создание QR-местоположения</item>
+        <item>Создание QR Wi-Fi</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>WPA/WPA2</item>
+        <item>WEP</item>
+        <item>Без пароля</item>
+    </string-array>
+
+    <string name="menu">Меню</string>
+
+    <string name="hidden">скрытый</string>
+    <string name="ssid_network_name">SSID/Имя сети</string>
+    <string name="password">Пароль</string>
+    <string name="wifi">Wi-Fi</string>
 </resources>

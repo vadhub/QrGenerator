@@ -42,4 +42,23 @@
     <string name="required">Este es un campo obligatorio</string>
     <string name="textCopied">texto copiado</string>
     <string name="paste">pegar</string>
+
+    <string-array name="item_menu">
+        <item>Escáner QR</item>
+        <item>Crear un contacto QR</item>
+        <item>Crear texto QR</item>
+        <item>Creación de una ubicación QR</item>
+        <item>Creación de QR Wi-Fi</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>WPA/WPA2</item>
+        <item>WEP</item>
+        <item>No password</item>
+    </string-array>
+    <string name="hidden">oculto</string>
+    <string name="ssid_network_name">SSID/Nombre de red</string>
+    <string name="password">Contraseña</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="menu">Menú</string>
 </resources>
