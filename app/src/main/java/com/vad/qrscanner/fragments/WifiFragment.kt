@@ -4,15 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
+import com.vad.qrscanner.domain.CheckEmptyText
+import com.vad.qrscanner.navigation.CustomAction
+import com.vad.qrscanner.navigation.HasCustomAction
+import com.vad.qrscanner.navigation.HasCustomTitle
+import com.vad.qrscanner.navigation.Navigator
 
 
-class WifiFragment : Fragment() {
+class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
+
+    private lateinit var textName: EditText
+    private lateinit var textPassword: EditText
+    private lateinit var hidden: CheckBox
+    private lateinit var type: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,8 +31,14 @@ class WifiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.item_menu))
+        val arrayType = resources.getStringArray(R.array.type)
+        type = arrayType.get(0)
+        val adapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, arrayType)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        textName = view.findViewById(R.id.editTextNameWifi)
+        textPassword = view.findViewById(R.id.editTextPasswordWifi)
+        hidden = view.findViewById(R.id.hidden)
 
         val spinner = view.findViewById<Spinner>(R.id.spinner)
         spinner.adapter = adapter
@@ -35,11 +49,29 @@ class WifiFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-
+                type = arrayType.get(position)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
         })
     }
+
+    override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_done_24) {
+            CheckEmptyText.check(requireContext().getString(R.string.required), textName, textPassword) {
+                val hid = if(hidden.isChecked)  ", ${resources.getString(R.string.hidden)}" else ""
+
+                val str = "${resources.getString(R.string.ssid_network_name)}: ${textName.text}, " +
+                        "${resources.getString(R.string.password)}: ${textPassword.text}, " +
+                        "\n$type\n$hid"
+
+                val bundle = Bundle()
+                bundle.putString("result_text", str)
+                val fragment: Fragment = ResultQrFragment()
+                fragment.arguments = bundle
+                navigator.startFragment(fragment)
+            }
+    }
+
+    override fun getTitle() = R.string.wifi
 }
