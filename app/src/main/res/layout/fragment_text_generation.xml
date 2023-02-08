@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     android:background="@color/background"
     tools:context=".fragments.TextFragmentGeneration">
 
@@ -30,7 +32,6 @@
                 style="@style/editText"
                 android:hint="@string/enter_text"
                 android:gravity="top"
-                android:ems="10"
                 android:paddingHorizontal="8dp"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>

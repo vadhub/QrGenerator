@@ -14,7 +14,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
@@ -32,8 +31,6 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
     private lateinit var imageViewQr: ImageView
     private lateinit var textViewResult: TextView
-
-    val REQUEST_CODE = 24356
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

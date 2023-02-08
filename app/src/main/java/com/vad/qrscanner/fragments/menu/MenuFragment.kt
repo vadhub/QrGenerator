@@ -13,10 +13,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.vad.qrscanner.CustomScannerActivity
 import com.vad.qrscanner.R
-import com.vad.qrscanner.fragments.LocationFragmentGeneration
-import com.vad.qrscanner.fragments.PhoneFragmentGeneration
-import com.vad.qrscanner.fragments.ResultFragment
-import com.vad.qrscanner.fragments.TextFragmentGeneration
+import com.vad.qrscanner.fragments.*
 import com.vad.qrscanner.navigation.HasCustomTitle
 import com.vad.qrscanner.navigation.Navigator
 
@@ -44,7 +41,8 @@ class MenuFragment : Fragment(), HasCustomTitle {
             resources.getDrawable(R.drawable.ic_baseline_qr_code_scanner_24),
             resources.getDrawable(R.drawable.ic_baseline_contact_page_24),
             resources.getDrawable(R.drawable.ic_baseline_text_fields_24),
-            resources.getDrawable(R.drawable.ic_baseline_edit_location_24)
+            resources.getDrawable(R.drawable.ic_baseline_edit_location_24),
+            resources.getDrawable(R.drawable.ic_baseline_wifi_24)
         )
 
         val list = listIcon.zip(listTitle).toList()
@@ -65,6 +63,7 @@ class MenuFragment : Fragment(), HasCustomTitle {
             1 -> navigator.startFragment(PhoneFragmentGeneration())
             2 -> navigator.startFragment(TextFragmentGeneration())
             3 -> navigator.startFragment(LocationFragmentGeneration())
+            4 -> navigator.startFragment(WifiFragment())
         }
     }
 

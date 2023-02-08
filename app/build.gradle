@@ -11,8 +11,8 @@ android {
         applicationId "com.vad.qrscanner"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,6 +48,8 @@ dependencies {
     implementation "androidx.core:core-ktx:1.9.0"
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }
 repositories {
     mavenCentral()

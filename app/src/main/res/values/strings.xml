@@ -50,9 +50,21 @@
         <item>Create QR contact</item>
         <item>Create QR text</item>
         <item>Create QR location</item>
+        <item>Create QR wifi</item>
+    </string-array>
+
+    <string-array name="type">
+        <item>WPA/WPA2</item>
+        <item>WEP</item>
+        <item>No password</item>
     </string-array>
 
     <string name="menu">Menu</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hidden">hidden</string>
+    <string name="ssid_network_name">SSID/Network name</string>
+    <string name="password">Password</string>
 
 
 </resources>

@@ -64,6 +64,7 @@ public class LocationFragmentGeneration extends Fragment implements HasCustomTit
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             display();
+
         } else {
             requestPermissions(
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
