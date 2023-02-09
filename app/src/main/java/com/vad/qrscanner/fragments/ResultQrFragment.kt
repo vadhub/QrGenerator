@@ -90,8 +90,8 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
                 val bitmapPath: String = MediaStore.Images.Media.insertImage(
                     context?.contentResolver,
                     bitmapQr,
-                    "palette",
-                    "share palette"
+                    "qr",
+                    "share qr"
                 )
                 val bitmapUri = Uri.parse(bitmapPath)
 
