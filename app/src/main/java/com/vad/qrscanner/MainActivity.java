@@ -1,12 +1,14 @@
 package com.vad.qrscanner;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -140,10 +142,20 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
     @Override
     public void startFragment(@NonNull Fragment fragment) {
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
                 .add(R.id.frame_replacer, fragment)
                 .commit();
+    }
+
+    @Override
+    public void hide() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

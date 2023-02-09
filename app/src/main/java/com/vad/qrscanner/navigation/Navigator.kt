@@ -2,6 +2,6 @@ package com.vad.qrscanner.navigation
 
 import androidx.fragment.app.Fragment
 
-interface Navigator {
+interface Navigator: KeyBoard {
     fun startFragment(fragment: Fragment)
 }

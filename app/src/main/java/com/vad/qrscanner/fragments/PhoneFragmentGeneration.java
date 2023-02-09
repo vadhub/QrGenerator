@@ -63,6 +63,7 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
                         bundle.putString("result_text", str);
                         Fragment fragment = new ResultQrFragment();
                         fragment.setArguments(bundle);
+                        navigator.hide();
                         navigator.startFragment(fragment);
                     });
         });

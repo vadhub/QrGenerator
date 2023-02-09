@@ -157,6 +157,7 @@ public class LocationFragmentGeneration extends Fragment implements HasCustomTit
         args.putString("result_text", content);
         Fragment fragmentResult = new ResultQrFragment();
         fragmentResult.setArguments(args);
+        navigator.hide();
         navigator.startFragment(fragmentResult);
     }
 

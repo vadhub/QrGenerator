@@ -13,7 +13,6 @@ import com.vad.qrscanner.navigation.CustomAction
 import com.vad.qrscanner.navigation.HasCustomAction
 import com.vad.qrscanner.navigation.HasCustomTitle
 import com.vad.qrscanner.navigation.Navigator
-import kotlin.properties.Delegates
 
 
 class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
@@ -82,6 +81,7 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
                 bundle.putString("result_text", str)
                 val fragment: Fragment = ResultQrFragment()
                 fragment.arguments = bundle
+                navigator.hide()
                 navigator.startFragment(fragment)
             }
     }

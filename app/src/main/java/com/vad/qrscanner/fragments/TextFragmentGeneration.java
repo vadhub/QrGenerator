@@ -60,6 +60,7 @@ public class TextFragmentGeneration extends Fragment implements HasCustomTitle, 
                 bundle.putString("result_text", str);
                 Fragment fragment = new ResultQrFragment();
                 fragment.setArguments(bundle);
+                navigator.hide();
                 navigator.startFragment(fragment);
             } else {
                 Toast toast = Toast.makeText(getContext(), getString(R.string.enter_text_pl), Toast.LENGTH_SHORT);
