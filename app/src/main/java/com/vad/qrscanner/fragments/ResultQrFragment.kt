@@ -1,10 +1,13 @@
 package com.vad.qrscanner.fragments
 
 import android.Manifest
+import android.R.attr.bitmap
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -15,6 +18,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
@@ -91,15 +95,18 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
         }
 
         val shareAction = CustomAction(R.drawable.ic_baseline_share_24) {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                resources.getString(R.string.share)
-            )
+                val bitmapPath: String = MediaStore.Images.Media.insertImage(
+                    context?.contentResolver,
+                    bitmapQr,
+                    "palette",
+                    "share palette"
+                )
+                val bitmapUri = Uri.parse(bitmapPath)
 
-            val sIntent = Intent.createChooser(shareIntent, null)
-            startActivity(sIntent)
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "image/png"
+                intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
+                startActivity(Intent.createChooser(intent, "Share"))
         }
 
         listAction.add(saveAction)
