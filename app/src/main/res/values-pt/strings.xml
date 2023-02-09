@@ -62,5 +62,6 @@
     <string name="hidden">escondido</string>
     <string name="ssid_network_name">SSID/Nome da rede</string>
     <string name="password">Senha</string>
+    <string name="share">Compartilhar</string>
 
 </resources>

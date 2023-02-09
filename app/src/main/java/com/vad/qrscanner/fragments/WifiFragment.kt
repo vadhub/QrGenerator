@@ -69,11 +69,11 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
                 val password =
                     if (!isPassword)
-                        "${resources.getString(R.string.password)}: ${textPassword.text}, "
+                        "${resources.getString(R.string.password)}: ${textPassword.text}\n"
                     else
                         ""
 
-                val str = "${resources.getString(R.string.ssid_network_name)}: ${textName.text}, " +
+                val str = "${resources.getString(R.string.ssid_network_name)}: ${textName.text}\n" +
                         password +
                         "\n$type\n$hid"
 

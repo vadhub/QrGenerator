@@ -27,12 +27,14 @@ import com.vad.qrscanner.fragments.ResultFragment;
 import com.vad.qrscanner.fragments.menu.MenuFragment;
 import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
+import com.vad.qrscanner.navigation.HasCustomActions;
 import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
 import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -93,11 +95,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         if (fragment instanceof HasCustomTitle) {
             toolbar.setTitle(((HasCustomTitle) fragment).getTitle());
         }
-
+        toolbar.getMenu().clear();
         if (fragment instanceof HasCustomAction) {
             createCustomToolbarAction(((HasCustomAction)fragment).setCustomAction(this));
-        } else {
-            toolbar.getMenu().clear();
+        } else if (fragment instanceof HasCustomActions) {
+            List<CustomAction> customActionList = ((HasCustomActions)fragment).setCustomAction(this);
+            for (CustomAction a: customActionList) {
+                createCustomToolbarAction(a);
+            }
         }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount() > 0);
@@ -111,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
     @SuppressLint("ResourceType")
     private void createCustomToolbarAction(CustomAction customActionFragment) {
-        toolbar.getMenu().clear();
-
         Drawable iconDrawable = DrawableCompat.wrap(Objects.requireNonNull(ContextCompat.getDrawable(this, customActionFragment.getIcon())));
         iconDrawable.setTint(Color.WHITE);
         MenuItem menuItem = toolbar.getMenu().add("");

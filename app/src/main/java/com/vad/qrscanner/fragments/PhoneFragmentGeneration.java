@@ -9,8 +9,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.vad.qrscanner.domain.CheckEmptyText;
 import com.vad.qrscanner.R;
+import com.vad.qrscanner.domain.CheckEmptyText;
 import com.vad.qrscanner.navigation.CustomAction;
 import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomTitle;
