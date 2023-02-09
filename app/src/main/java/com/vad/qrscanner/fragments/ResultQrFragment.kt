@@ -50,6 +50,8 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomAction {
         text = arguments?.getString("result_text") ?: ""
         bitmapQr = QRTools.generate(text)
 
+        
+
         val res = resources.getStringArray(R.array.colors)
         val colors = IntArray(res.size)
 

@@ -13,6 +13,7 @@ import com.vad.qrscanner.navigation.CustomAction
 import com.vad.qrscanner.navigation.HasCustomAction
 import com.vad.qrscanner.navigation.HasCustomTitle
 import com.vad.qrscanner.navigation.Navigator
+import kotlin.properties.Delegates
 
 
 class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
@@ -21,6 +22,7 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
     private lateinit var textPassword: EditText
     private lateinit var hidden: CheckBox
     private lateinit var type: String
+    private var isPassword = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +52,11 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
                 id: Long
             ) {
                 type = arrayType.get(position)
+                isPassword = position == 2
+                if (position == 2) {
+                    textPassword.isEnabled = false
+                }
+
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -59,10 +66,16 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
     override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_done_24) {
             CheckEmptyText.check(requireContext().getString(R.string.required), textName, textPassword) {
-                val hid = if(hidden.isChecked)  ", ${resources.getString(R.string.hidden)}" else ""
+                val hid = if(hidden.isChecked)  resources.getString(R.string.hidden) else ""
+
+                val password =
+                    if (!isPassword)
+                        "${resources.getString(R.string.password)}: ${textPassword.text}, "
+                    else
+                        ""
 
                 val str = "${resources.getString(R.string.ssid_network_name)}: ${textName.text}, " +
-                        "${resources.getString(R.string.password)}: ${textPassword.text}, " +
+                        password +
                         "\n$type\n$hid"
 
                 val bundle = Bundle()

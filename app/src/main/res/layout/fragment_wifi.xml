@@ -47,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
+                app:endIconMode="password_toggle"
                 android:layout_margin="8dp"
                 app:errorIconDrawable="@color/design_default_color_error">
 
