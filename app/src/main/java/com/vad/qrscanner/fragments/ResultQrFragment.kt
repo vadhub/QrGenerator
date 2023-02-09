@@ -1,13 +1,11 @@
 package com.vad.qrscanner.fragments
 
 import android.Manifest
-import android.R.attr.bitmap
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -18,7 +16,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
@@ -83,12 +80,7 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
         val listAction = mutableListOf<CustomAction>()
         val saveAction = CustomAction(R.drawable.ic_baseline_save_24) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                MediaStore.Images.Media.insertImage(
-                    context?.contentResolver,
-                    bitmapQr, "" + System.currentTimeMillis(), ""
-                )
-
-                Toast.makeText(context, getString(R.string.save_to) + "Gallery", Toast.LENGTH_LONG).show()
+                saveImage(bitmapQr!!)
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
@@ -120,15 +112,20 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                MediaStore.Images.Media.insertImage(
-                    context?.contentResolver,
-                    bitmapQr, "" + System.currentTimeMillis(), ""
-                )
-                Toast.makeText(context, getString(R.string.save_to) + "Gallery", Toast.LENGTH_LONG).show()
+                saveImage(bitmapQr!!)
             } else {
                 Toast.makeText(context, "Permission not granted", Toast.LENGTH_SHORT).show()
             }
         }
+
+    private fun saveImage(bitmap: Bitmap) {
+        MediaStore.Images.Media.insertImage(
+            context?.contentResolver,
+            bitmap, "" + System.currentTimeMillis(), ""
+        )
+
+        Toast.makeText(context, getString(R.string.save_to) + "Gallery", Toast.LENGTH_LONG).show()
+    }
 
     override fun getTitle() = R.string.fragment_result_qr
 }
