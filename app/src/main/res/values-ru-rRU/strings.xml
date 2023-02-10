@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">QR-генератор</string>
+    <string name="app_name">QR Сканер &#38; генератор</string>
     <string name="permission_name">Доступ к местоположению</string>
     <string name="permission_message_body">Доступ к точному местоположению</string>
     <string name="permission_ok">предоставляется</string>

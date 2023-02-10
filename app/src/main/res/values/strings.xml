@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QR Generator</string>
+    <string name="app_name">QR Scanner &#38; Generator</string>
     <string name="permission_name">Access location</string>
     <string name="permission_message_body">Access Fine Location</string>
     <string name="permission_ok">granted</string>

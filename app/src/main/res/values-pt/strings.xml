@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Gerador QR</string>
+    <string name="app_name">QR Scanner &#38; Gerador</string>
     <string name="permission_name">Localização de acesso</string>
     <string name="permission_message_body">Acessar a localização perfeita</string>
     <string name="permission_ok">garantido</string>
