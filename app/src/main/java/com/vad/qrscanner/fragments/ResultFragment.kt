@@ -3,6 +3,7 @@ package com.vad.qrscanner.fragments
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,9 +36,13 @@ class ResultFragment : Fragment(), HasCustomTitle {
         super.onViewCreated(view, savedInstanceState)
 
         val result = view.findViewById(R.id.resultQr) as EditText
-        result.setText(arguments?.getString("content"))
-
         val copy = view.findViewById(R.id.copyImageView) as ImageView
+        val imageReturn = view.findViewById(R.id.captureResult) as ImageView
+
+        val temp = arguments?.getString("temp_image")
+        val bmImg = BitmapFactory.decodeFile(temp)
+        imageReturn.setImageBitmap(bmImg)
+        result.setText(arguments?.getString("content"))
 
         copy.setOnClickListener {
             val clipboard: ClipboardManager? =
@@ -48,6 +53,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
 
             Toast.makeText(thisContext, thisContext.getText(R.string.textCopied), Toast.LENGTH_SHORT).show()
         }
+
     }
 
     override fun getTitle(): Int = R.string.fragment_result

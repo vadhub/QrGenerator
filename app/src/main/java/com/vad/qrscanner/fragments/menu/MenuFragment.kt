@@ -70,22 +70,22 @@ class MenuFragment : Fragment(), HasCustomTitle {
     private val barcodeLauncher = registerForActivityResult(
         ScanContract()
     ) { result: ScanIntentResult ->
-        if (result.contents != null) {
-            startResult(result.contents)
-        }
+        startResult(result)
     }
 
     private fun startQrScanner() {
         val scanOptions = ScanOptions()
         scanOptions.setOrientationLocked(true)
         scanOptions.setPrompt("")
+        scanOptions.setBarcodeImageEnabled(true)
         scanOptions.captureActivity = CustomScannerActivity::class.java
         barcodeLauncher.launch(scanOptions)
     }
 
-    private fun startResult(content: String) {
+    private fun startResult(scanIntentResult: ScanIntentResult) {
         val args = Bundle()
-        args.putString("content", content)
+        args.putString("content", scanIntentResult.contents)
+        args.putString("temp_image", scanIntentResult.barcodeImagePath)
         val fragmentResult: Fragment = ResultFragment()
         fragmentResult.arguments = args
         navigator.startFragment(fragmentResult)
