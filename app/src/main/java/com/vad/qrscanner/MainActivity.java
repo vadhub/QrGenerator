@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
-                    String content = QRTools.decodeQRImage(FileUtils.getPath(uri, this));
-                    startResult(content);
+                    startResult(FileUtils.getPath(uri, this));
                 }
             });
 
     private void startResult(String content) {
         Bundle args = new Bundle();
-        args.putString("content", content);
+        args.putString("temp_image", content);
+        args.putString("content", QRTools.decodeQRImage(content));
         Fragment fragmentResult = new ResultFragment();
         fragmentResult.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
