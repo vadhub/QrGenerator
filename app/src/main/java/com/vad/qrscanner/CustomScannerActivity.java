@@ -1,8 +1,10 @@
 package com.vad.qrscanner;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +16,9 @@ public class CustomScannerActivity extends AppCompatActivity {
 
     private CaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
+    private ImageView flashlight;
     private Common common;
+    private boolean isOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class CustomScannerActivity extends AppCompatActivity {
         common = Common.getInstance();
 
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
+        flashlight = findViewById(R.id.flashlight);
 
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
@@ -70,5 +75,17 @@ public class CustomScannerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void flashlight(View view) {
+        if (isOn) {
+            flashlight.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_flash_off_24));
+            barcodeScannerView.setTorchOn();
+            isOn = false;
+        } else {
+            flashlight.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_flash_on_24));
+            barcodeScannerView.setTorchOff();
+            isOn = true;
+        }
     }
 }
