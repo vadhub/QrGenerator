@@ -52,6 +52,7 @@
         <item>Create QR text</item>
         <item>Creating a QR Location</item>
         <item>Creation of QR Wi-Fi</item>
+        <item>Creation a QR Email</item>
     </string-array>
 
     <string-array name="type">
@@ -67,6 +68,8 @@
     <string name="password">Password</string>
     <string name="wifi">Wi-Fi</string>
     <string name="share">Share</string>
+    <string name="subject">Subject</string>
+    <string name="body">Body</string>
 
 
 </resources>
