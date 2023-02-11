@@ -13,8 +13,6 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/black"
-        app:boxStrokeColor="@color/black"
         app:errorEnabled="true"
         app:errorIconDrawable="@color/design_default_color_error">
 
@@ -23,8 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/result"
-            android:inputType="textMultiLine"
-            android:textColor="@color/black" />
+            android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
@@ -44,6 +41,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
 
 </LinearLayout>

@@ -47,6 +47,7 @@
 
     <string-array name="item_menu">
         <item>QR Scanner</item>
+        <item>QR from image</item>
         <item>Create a QR contact</item>
         <item>Create QR text</item>
         <item>Creating a QR Location</item>

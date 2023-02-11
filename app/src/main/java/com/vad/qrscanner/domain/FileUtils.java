@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class FileUtils {
     public static String getPath(Uri uri, Context context) {
+        System.out.println(uri+"_________________________________________");
         String selection = null;
         String[] selectionArgs = null;
         // Uri is different in versions after KITKAT (Android 4.4), we need to

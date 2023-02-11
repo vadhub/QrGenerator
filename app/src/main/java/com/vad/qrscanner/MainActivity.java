@@ -130,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             uri -> {
                 if (uri != null) {
-                    startResult(FileUtils.getPath(uri, this));
+                    String s = FileUtils.getPath(uri, this);
+                    startResult(s);
                 }
             });
 
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         args.putString("content", QRTools.decodeQRImage(content));
         Fragment fragmentResult = new ResultFragment();
         fragmentResult.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, fragmentResult).commit();
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).add(R.id.frame_replacer, fragmentResult).commit();
     }
 
     @Override
@@ -161,4 +162,5 @@ public class MainActivity extends AppCompatActivity implements Navigator {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
 }
