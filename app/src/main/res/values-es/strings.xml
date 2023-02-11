@@ -45,10 +45,12 @@
 
     <string-array name="item_menu">
         <item>Escáner QR</item>
+        <item>QR de imagen</item>
         <item>Crear un contacto QR</item>
         <item>Crear texto QR</item>
         <item>Creación de una ubicación QR</item>
         <item>Creación de QR Wi-Fi</item>
+        <item>Creación de QR Email</item>
     </string-array>
 
     <string-array name="type">
@@ -62,4 +64,6 @@
     <string name="wifi">Wi-Fi</string>
     <string name="menu">Menú</string>
     <string name="share">Compartir</string>
+    <string name="subject">Sujeto</string>
+    <string name="body">Cuerpo</string>
 </resources>

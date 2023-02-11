@@ -46,10 +46,12 @@
 
     <string-array name="item_menu">
         <item>QR-Сканнер</item>
+        <item>QR из изображения</item>
         <item>Создание QR-Контакта</item>
         <item>Создание QR-текст</item>
         <item>Создание QR-местоположения</item>
         <item>Создание QR Wi-Fi</item>
+        <item>Создание QR Email</item>
     </string-array>
 
     <string-array name="type">
@@ -65,4 +67,6 @@
     <string name="password">Пароль</string>
     <string name="wifi">Wi-Fi</string>
     <string name="share">Поделиться</string>
+    <string name="body">Текст</string>
+    <string name="subject">Тема</string>
 </resources>
