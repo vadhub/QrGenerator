@@ -98,7 +98,7 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "image/png"
                 intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
-                startActivity(Intent.createChooser(intent, "Share"))
+                startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
         }
 
         listAction.add(saveAction)
