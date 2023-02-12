@@ -51,6 +51,7 @@
         <item>Criando um local QR</item>
         <item>Criação de QR Wi-Fi</item>
         <item>Criação de QR Email</item>
+        <item>Criação de QR SMS</item>
     </string-array>
 
     <string-array name="type">

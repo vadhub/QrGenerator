@@ -54,7 +54,8 @@ class MenuFragment : Fragment(), HasCustomTitle {
             resources.getDrawable(R.drawable.ic_baseline_text_fields_24),
             resources.getDrawable(R.drawable.ic_baseline_edit_location_24),
             resources.getDrawable(R.drawable.ic_baseline_wifi_24),
-            resources.getDrawable(R.drawable.ic_baseline_email_24)
+            resources.getDrawable(R.drawable.ic_baseline_email_24),
+            resources.getDrawable(R.drawable.ic_baseline_sms_24)
         )
 
         val list = listIcon.zip(listTitle).toList()
@@ -78,6 +79,7 @@ class MenuFragment : Fragment(), HasCustomTitle {
             4 -> navigator.startFragment(LocationFragmentGeneration())
             5 -> navigator.startFragment(WifiFragment())
             6 -> navigator.startFragment(EmailFragment())
+            7 -> navigator.startFragment(SmsFragment())
         }
     }
 

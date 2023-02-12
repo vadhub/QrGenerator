@@ -52,6 +52,7 @@
         <item>Создание QR-местоположения</item>
         <item>Создание QR Wi-Fi</item>
         <item>Создание QR Email</item>
+        <item>Создание QR SMS</item>
     </string-array>
 
     <string-array name="type">

@@ -51,6 +51,7 @@
         <item>Creación de una ubicación QR</item>
         <item>Creación de QR Wi-Fi</item>
         <item>Creación de QR Email</item>
+        <item>Creación de QR SMS</item>
     </string-array>
 
     <string-array name="type">
