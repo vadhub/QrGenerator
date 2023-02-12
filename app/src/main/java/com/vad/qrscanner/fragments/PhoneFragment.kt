@@ -32,7 +32,7 @@ class PhoneFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
     override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_done_24) {
         CheckEmptyText.check(requireContext().getString(R.string.required), phone) {
-            val str = "${getString(R.string.phone_number)}: ${phone.text}, "
+            val str = "${getString(R.string.phone_number)}: ${phone.text}"
 
             val bundle = Bundle()
             bundle.putString("result_text", str)

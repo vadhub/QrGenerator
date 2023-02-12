@@ -45,7 +45,7 @@
     <string name="paste">вставить</string>
 
     <string-array name="item_menu">
-        <item>QR-Сканнер</item>
+        <item>QR-Сканер</item>
         <item>QR из изображения</item>
         <item>QR-Контакт</item>
         <item>QR-текст</item>

@@ -66,7 +66,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
         share.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_STREAM, result.text)
+            intent.putExtra(Intent.EXTRA_TEXT, result.text)
             startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
         }
 
