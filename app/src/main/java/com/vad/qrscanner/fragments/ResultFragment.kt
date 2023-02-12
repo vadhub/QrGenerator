@@ -41,6 +41,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
         val copy = view.findViewById(R.id.copyImageView) as ImageView
         val imageReturn = view.findViewById(R.id.captureResult) as ImageView
         val search = view.findViewById(R.id.searchImageView) as ImageView
+        val share = view.findViewById(R.id.shareImageView) as ImageView
 
         val temp = arguments?.getString("temp_image")
         val bmImg = BitmapFactory.decodeFile(temp)
@@ -60,6 +61,13 @@ class ResultFragment : Fragment(), HasCustomTitle {
         search.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=${result.text}"))
             startActivity(browserIntent)
+        }
+
+        share.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_STREAM, result.text)
+            startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
         }
 
     }
