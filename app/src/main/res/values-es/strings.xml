@@ -46,12 +46,13 @@
     <string-array name="item_menu">
         <item>Escáner QR</item>
         <item>QR de imagen</item>
-        <item>Crear un contacto QR</item>
-        <item>Crear texto QR</item>
-        <item>Creación de una ubicación QR</item>
-        <item>Creación de QR Wi-Fi</item>
-        <item>Creación de QR Email</item>
-        <item>Creación de QR SMS</item>
+        <item>QR contacto</item>
+        <item>Texto QR</item>
+        <item>QR Ubicación</item>
+        <item>Wi-Fi QR</item>
+        <item>Email QR</item>
+        <item>SMS QR</item>
+        <item>QR Número de teléfono</item>
     </string-array>
 
     <string-array name="type">

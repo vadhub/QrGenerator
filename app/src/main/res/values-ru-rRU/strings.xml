@@ -47,12 +47,13 @@
     <string-array name="item_menu">
         <item>QR-Сканнер</item>
         <item>QR из изображения</item>
-        <item>Создание QR-Контакта</item>
-        <item>Создание QR-текст</item>
-        <item>Создание QR-местоположения</item>
-        <item>Создание QR Wi-Fi</item>
-        <item>Создание QR Email</item>
-        <item>Создание QR SMS</item>
+        <item>QR-Контакт</item>
+        <item>QR-текст</item>
+        <item>QR-местоположения</item>
+        <item>QR Wi-Fi</item>
+        <item>QR Email</item>
+        <item>QR SMS</item>
+        <item>QR-номера</item>
     </string-array>
 
     <string-array name="type">

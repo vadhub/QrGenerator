@@ -14,28 +14,25 @@ import com.vad.qrscanner.navigation.HasCustomTitle
 import com.vad.qrscanner.navigation.Navigator
 
 
-class SmsFragment : Fragment(), HasCustomTitle, HasCustomAction {
+class PhoneFragment : Fragment(), HasCustomTitle, HasCustomAction {
 
     private lateinit var phone: EditText
-    private lateinit var body: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_sms, container, false)
+        return inflater.inflate(R.layout.fragment_phone, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        phone = view.findViewById(R.id.editTextPhoneSms)
-        body = view.findViewById(R.id.editTextBodySms)
+        phone = view.findViewById(R.id.editTextPhone1)
     }
 
     override fun setCustomAction(navigator: Navigator) = CustomAction(R.drawable.ic_baseline_done_24) {
-        CheckEmptyText.check(requireContext().getString(R.string.required), phone, body) {
-            val str = "${getString(R.string.phone_number)}: ${phone.text}, " +
-                    "${getString(R.string.body)}: ${body.text}"
+        CheckEmptyText.check(requireContext().getString(R.string.required), phone) {
+            val str = "${getString(R.string.phone_number)}: ${phone.text}, "
 
             val bundle = Bundle()
             bundle.putString("result_text", str)
@@ -46,6 +43,6 @@ class SmsFragment : Fragment(), HasCustomTitle, HasCustomAction {
         }
     }
 
-    override fun getTitle() = R.string.sms
+    override fun getTitle() = R.string.phone_number
 
 }
