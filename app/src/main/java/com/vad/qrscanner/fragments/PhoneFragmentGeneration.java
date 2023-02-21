@@ -48,12 +48,32 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
         return v;
     }
 
+    @SuppressLint("Range")
     private final ActivityResultLauncher<Void> launcher = registerForActivityResult(new ActivityResultContracts.PickContact(), result -> {
         Cursor phone = getContext().getContentResolver().query(result, null, null, null, null);
-        if (phone.moveToFirst()) {
-            @SuppressLint("Range")
-            String contactName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 
+        if (phone.moveToFirst()) {
+            editTextName.setText(phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+            String id = phone.getString(phone.getColumnIndex(ContactsContract.Contacts._ID));
+            if (Integer.parseInt(phone.getString(phone.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                Cursor phones = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+                while (phones.moveToNext()) {
+                    editTextPhone.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                    editTextEmail.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)));
+                    editTextOrganization.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY)));
+                    editTextNotes.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE)));
+
+                    String address = "";
+                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+
+                    editTextAddress.setText(address);
+                }
+                phones.close();
+            }
+            phone.close();
         }
     });
 
@@ -68,7 +88,7 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
     @NonNull
     @Override
     public List<CustomAction> setCustomAction(@NonNull Navigator navigator) {
-        List<CustomAction> customActions = new ArrayList<CustomAction>();
+        List<CustomAction> customActions = new ArrayList();
         CustomAction contact = new CustomAction(R.drawable.ic_baseline_person_24, () -> {
             permission.launch(Manifest.permission.READ_CONTACTS);
         });
