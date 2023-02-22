@@ -23,10 +23,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.vad.qrscanner'
 }
 
 dependencies {
@@ -43,13 +49,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.yandex.android:mobileads:5.5.0'
+
+    //noinspection MobileAdsSdkOutdatedVersion
+    implementation 'com.yandex.android:mobileads:5.6.0'
     implementation "dev.sasikanth:colorsheet:1.0.1"
     implementation "androidx.core:core-ktx:1.9.0"
-    //noinspection GradleDependency
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }
 repositories {
     mavenCentral()
