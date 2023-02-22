@@ -48,32 +48,37 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
         return v;
     }
 
-    @SuppressLint("Range")
     private final ActivityResultLauncher<Void> launcher = registerForActivityResult(new ActivityResultContracts.PickContact(), result -> {
-        Cursor phone = getContext().getContentResolver().query(result, null, null, null, null);
 
-        if (phone.moveToFirst()) {
-            editTextName.setText(phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-            String id = phone.getString(phone.getColumnIndex(ContactsContract.Contacts._ID));
-            if (Integer.parseInt(phone.getString(phone.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+        Cursor cursor = getContext().getContentResolver().query(result, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            editTextName.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+            String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
                 Cursor phones = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
                 while (phones.moveToNext()) {
                     editTextPhone.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    editTextEmail.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)));
-                    editTextOrganization.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY)));
-                    editTextNotes.setText(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Note.NOTE)));
-
-                    String address = "";
-                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-                    address += " " + phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-
-                    editTextAddress.setText(address);
                 }
                 phones.close();
+
+                Cursor email = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + id, null, null);
+                if (email.moveToFirst()) {
+                    editTextEmail.setText(email.getString(email.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)));
+                }
+                email.close();
+
+                Cursor address = getContext().getContentResolver().query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, null, ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = " + id, null, null);
+                if (address.moveToFirst()) {
+                    String street = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    String city = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    String region = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    String country = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                    editTextEmail.setText(street+" "+city+" "+region+" "+country);
+                }
+                address.close();
             }
-            phone.close();
+            cursor.close();
         }
     });
 
