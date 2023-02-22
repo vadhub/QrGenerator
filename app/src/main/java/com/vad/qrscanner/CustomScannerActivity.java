@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdRequest;
 
 public class CustomScannerActivity extends AppCompatActivity {
 
@@ -23,6 +26,12 @@ public class CustomScannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_scanner);
+
+        BannerAdView mBanner = (BannerAdView) findViewById(R.id.adViewQR);
+        mBanner.setAdUnitId("R-M-2167912-2");
+        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBanner.loadAd(adRequest);
 
         common = Common.getInstance();
 
