@@ -74,7 +74,7 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
                     String city = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
                     String region = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
                     String country = address.getString(address.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-                    editTextEmail.setText(street+" "+city+" "+region+" "+country);
+                    editTextAddress.setText(street+" "+city+" "+region+" "+country);
                 }
                 address.close();
             }
