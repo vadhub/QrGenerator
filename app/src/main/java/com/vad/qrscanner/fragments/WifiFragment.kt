@@ -52,9 +52,7 @@ class WifiFragment : Fragment(), HasCustomTitle, HasCustomAction {
             ) {
                 type = arrayType.get(position)
                 isPassword = position == 2
-                if (position == 2) {
-                    textPassword.isEnabled = false
-                }
+                textPassword.isEnabled = position != 2
 
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {

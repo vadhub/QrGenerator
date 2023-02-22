@@ -48,7 +48,6 @@ public class PhoneFragmentGeneration extends Fragment implements HasCustomTitle,
         return v;
     }
 
-    @SuppressLint("Range")
     private final ActivityResultLauncher<Void> launcher = registerForActivityResult(new ActivityResultContracts.PickContact(), result -> {
 
         Cursor cursor = getContext().getContentResolver().query(result, null, null, null, null);
