@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.vad.qrscanner.navigation.HasCustomTitle
 class ResultFragment : Fragment(), HasCustomTitle {
 
     private lateinit var thisContext: Context
+    private val regexLink = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,6 +49,11 @@ class ResultFragment : Fragment(), HasCustomTitle {
         val bmImg = BitmapFactory.decodeFile(temp)
         imageReturn.setImageBitmap(bmImg)
         result.setText(arguments?.getString("content"))
+
+        if (regexLink.containsMatchIn(result.text)) {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(result.text.toString()))
+            startActivity(browserIntent)
+        }
 
         copy.setOnClickListener {
             val clipboard: ClipboardManager? =
