@@ -4,8 +4,8 @@ class CheckLink {
 
     companion object {
         fun checkLink(text: String): Boolean {
-            val regexLink = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
-            return regexLink.containsMatchIn(text)
+            val regex = "((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+".toRegex()
+            return regex.containsMatchIn(text)
         }
     }
 }

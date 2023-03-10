@@ -10,5 +10,9 @@ internal class CheckLinkTest {
     @Test
     fun checkLink() {
         assertEquals(true, CheckLink.checkLink("https://www.youtube.com/"))
+        assertEquals(true, CheckLink.checkLink("http://www.youtube.com/"))
+        assertEquals(true, CheckLink.checkLink("www.youtube.com/"))
+        assertEquals(true, CheckLink.checkLink("youtube.ru"))
+        assertEquals(true, CheckLink.checkLink("youtube.com"))
     }
 }
