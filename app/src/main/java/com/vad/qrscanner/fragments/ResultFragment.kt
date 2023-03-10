@@ -16,13 +16,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
+import com.vad.qrscanner.domain.CheckLink
 import com.vad.qrscanner.navigation.HasCustomTitle
 
 
 class ResultFragment : Fragment(), HasCustomTitle {
 
     private lateinit var thisContext: Context
-    private val regexLink = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]".toRegex()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,7 +50,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
         imageReturn.setImageBitmap(bmImg)
         result.setText(arguments?.getString("content"))
 
-        if (regexLink.containsMatchIn(result.text)) {
+        if (CheckLink.checkLink(result.text.toString())) {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(result.text.toString()))
             startActivity(browserIntent)
         }
