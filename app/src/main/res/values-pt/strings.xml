@@ -69,5 +69,7 @@
     <string name="share">Compartilhar</string>
     <string name="subject">Assunto</string>
     <string name="body">Corpo</string>
+    <string name="goto_link">Seguindo um link</string>
+    <string name="folow_link">Siga o link?</string>
 
 </resources>

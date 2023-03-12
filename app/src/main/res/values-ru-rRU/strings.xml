@@ -71,4 +71,6 @@
     <string name="share">Поделиться</string>
     <string name="body">Текст</string>
     <string name="subject">Тема</string>
+    <string name="goto_link">Переход по ссылке</string>
+    <string name="folow_link">Перейти по ссылке?</string>
 </resources>

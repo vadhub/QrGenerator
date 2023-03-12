@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.vad.qrscanner.R
 import com.vad.qrscanner.domain.CheckLink
@@ -50,9 +51,28 @@ class ResultFragment : Fragment(), HasCustomTitle {
         imageReturn.setImageBitmap(bmImg)
         result.setText(arguments?.getString("content"))
 
+
         if (CheckLink.checkLink(result.text.toString())) {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(result.text.toString()))
-            startActivity(browserIntent)
+            val link = CheckLink.extractLink(result.text.toString())
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle(resources.getString(R.string.goto_link))
+            builder.setMessage(resources.getString(R.string.folow_link) + link)
+            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                try {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://${link}")
+                    )
+                    startActivity(browserIntent)
+                } catch (e: java.lang.Exception) {
+                }
+            }
+
+            builder.setNegativeButton(android.R.string.cancel) { dialog, which ->
+
+            }
+
+            builder.show()
         }
 
         copy.setOnClickListener {
@@ -62,11 +82,18 @@ class ResultFragment : Fragment(), HasCustomTitle {
             val clip = ClipData.newPlainText("copyLable", result.text.toString())
             clipboard!!.setPrimaryClip(clip)
 
-            Toast.makeText(thisContext, thisContext.getText(R.string.textCopied), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                thisContext,
+                thisContext.getText(R.string.textCopied),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         search.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=${result.text}"))
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.google.com/search?q=${result.text}")
+            )
             startActivity(browserIntent)
         }
 

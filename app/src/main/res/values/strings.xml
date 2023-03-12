@@ -74,5 +74,8 @@
     <string name="body">Body</string>
     <string name="sms" translatable="false">SMS</string>
 
+    <string name="goto_link">Following a link</string>
+    <string name="folow_link">Follow the link?</string>
+
 
 </resources>
