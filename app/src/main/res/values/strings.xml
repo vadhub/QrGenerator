@@ -76,6 +76,10 @@
 
     <string name="goto_link">Following a link</string>
     <string name="folow_link">Follow the link?</string>
+    <string name="option_information">Option information</string>
+    <string name="share_scan_result">share scan result</string>
+    <string name="web_search">web search</string>
+    <string name="copy_to_clipboard">copy to clipboard</string>
 
 
 </resources>

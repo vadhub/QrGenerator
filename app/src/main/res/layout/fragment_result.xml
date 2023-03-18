@@ -36,13 +36,13 @@
             android:backgroundTint="@color/zxing_transparent"
             app:srcCompat="@drawable/ic_baseline_share_24" />
 
-        <ImageButton
+        <Button
             android:id="@+id/searchImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:backgroundTint="@color/zxing_transparent"
-            app:srcCompat="@drawable/ic_baseline_search_24" />
+            android:text="web search"
+            android:drawableLeft="@drawable/ic_baseline_search_24" />
 
         <ImageButton
             android:id="@+id/copyImageView"

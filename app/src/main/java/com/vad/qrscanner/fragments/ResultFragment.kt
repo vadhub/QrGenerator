@@ -7,15 +7,16 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import com.vad.qrscanner.R
 import com.vad.qrscanner.domain.CheckLink
 import com.vad.qrscanner.navigation.HasCustomTitle
@@ -40,10 +41,13 @@ class ResultFragment : Fragment(), HasCustomTitle {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        val sharedPreferences = thisContext.getSharedPreferences("com.vad.qscanner", Context.MODE_PRIVATE)
+
         val result = view.findViewById(R.id.resultQr) as EditText
         val copy = view.findViewById(R.id.copyImageView) as ImageView
         val imageReturn = view.findViewById(R.id.captureResult) as ImageView
-        val search = view.findViewById(R.id.searchImageView) as ImageView
+        val search = view.findViewById(R.id.searchImageView) as Button
         val share = view.findViewById(R.id.shareImageView) as ImageView
 
         val temp = arguments?.getString("temp_image")
@@ -51,12 +55,19 @@ class ResultFragment : Fragment(), HasCustomTitle {
         imageReturn.setImageBitmap(bmImg)
         result.setText(arguments?.getString("content"))
 
+        if (result.text.isNotEmpty()) {
+            if (sharedPreferences.getBoolean("firstrun", true)) {
+                val dialog = DialogFragment()
+                dialog.show(parentFragmentManager, "info_tools")
+                sharedPreferences.edit().putBoolean("firstrun", false).apply()
+            }
+        }
 
         if (CheckLink.checkLink(result.text.toString())) {
             val link = CheckLink.extractLink(result.text.toString())
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle(resources.getString(R.string.goto_link))
-            builder.setMessage(resources.getString(R.string.folow_link) + link)
+            builder.setMessage(resources.getString(R.string.folow_link) +" "+ link)
             builder.setPositiveButton(android.R.string.ok) { dialog, which ->
                 try {
                     val browserIntent = Intent(
@@ -68,9 +79,7 @@ class ResultFragment : Fragment(), HasCustomTitle {
                 }
             }
 
-            builder.setNegativeButton(android.R.string.cancel) { dialog, which ->
-
-            }
+            builder.setNegativeButton(android.R.string.cancel) { _, _ -> }
 
             builder.show()
         }
