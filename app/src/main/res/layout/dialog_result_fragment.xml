@@ -12,7 +12,9 @@
         android:textSize="18sp"
         android:textColor="@color/black"
         android:text="@string/option_information"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -41,18 +43,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:paddingHorizontal="16dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
+            android:id="@+id/searchImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/zxing_transparent"
-            app:tint="#000000"
-            tools:src="@drawable/ic_baseline_search_24" />
+            android:layout_gravity="end"
+            android:text="@string/web_search"
+            android:drawableLeft="@drawable/ic_baseline_search_24" />
 
         <TextView
-            android:text="@string/web_search"
+            android:text="@string/search_internet"
             android:textSize="16sp"
+            android:paddingStart="8dp"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
