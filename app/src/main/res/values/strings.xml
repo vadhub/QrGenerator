@@ -80,6 +80,7 @@
     <string name="share_scan_result">share scan result</string>
     <string name="web_search">web search</string>
     <string name="copy_to_clipboard">copy to clipboard</string>
+    <string name="search_internet">search result on the internet</string>
 
 
 </resources>

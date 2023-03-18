@@ -73,4 +73,9 @@
     <string name="subject">Тема</string>
     <string name="goto_link">Переход по ссылке</string>
     <string name="folow_link">Перейти по ссылке?</string>
+    <string name="option_information">Информация об опциях</string>
+    <string name="share_scan_result">поделиться результатом сканирования</string>
+    <string name="web_search">веб-поиск</string>
+    <string name="copy_to_clipboard">скопировать в буфер обмена</string>
+    <string name="search_internet">поиск результата в интернете</string>
 </resources>

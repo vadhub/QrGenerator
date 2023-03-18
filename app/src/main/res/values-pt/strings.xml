@@ -71,5 +71,10 @@
     <string name="body">Corpo</string>
     <string name="goto_link">Seguindo um link</string>
     <string name="folow_link">Siga o link?</string>
+    <string name="share_scan_result">compartilhar resultado da verificação</string>
+    <string name="option_information">Informações da opção</string>
+    <string name="web_search">pesquisa na internet</string>
+    <string name="copy_to_clipboard">copiar para área de transferência</string>
+    <string name="search_internet">resultado de busca na internet</string>
 
 </resources>
