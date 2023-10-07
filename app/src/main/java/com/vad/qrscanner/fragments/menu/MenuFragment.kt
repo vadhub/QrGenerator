@@ -3,6 +3,7 @@ package com.vad.qrscanner.fragments.menu
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -86,11 +87,20 @@ class MenuFragment : Fragment(), HasCustomTitle {
     }
 
     private fun readImage() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            common.start()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
+                common.start()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            }
         } else {
-            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                common.start()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
         }
+
     }
 
     private val requestPermissionLauncher =
