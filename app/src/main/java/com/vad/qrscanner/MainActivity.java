@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,7 @@ import com.vad.qrscanner.navigation.HasCustomAction;
 import com.vad.qrscanner.navigation.HasCustomActions;
 import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
-import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
     private Toolbar toolbar;
 
+    private BannerAdView mBanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        BannerAdView mBanner = (BannerAdView) findViewById(R.id.adView);
-        mBanner.setAdUnitId("R-M-2167912-1");
-        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        mBanner = (BannerAdView) findViewById(R.id.adView);
+        mBanner.setAdUnitId("R-M-1981935-1");
+        mBanner.setAdSize(getAdSize());
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
 
@@ -64,6 +67,19 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         getSupportFragmentManager().registerFragmentLifecycleCallbacks(fragmentListener, false);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_replacer, new MenuFragment()).commit();
 
+    }
+
+    private BannerAdSize getAdSize() {
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        // Calculate the width of the ad, taking into account the padding in the ad container.
+        int adWidthPixels = mBanner.getWidth();
+        if (adWidthPixels == 0) {
+            // If the ad hasn't been laid out, default to the full screen width
+            adWidthPixels = displayMetrics.widthPixels;
+        }
+        final int adWidth = Math.round(adWidthPixels / displayMetrics.density);
+
+        return BannerAdSize.stickySize(this, adWidth);
     }
 
     @Override

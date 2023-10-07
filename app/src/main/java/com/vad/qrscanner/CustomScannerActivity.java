@@ -1,6 +1,7 @@
 package com.vad.qrscanner;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.yandex.mobile.ads.banner.AdSize;
+import com.yandex.mobile.ads.banner.BannerAdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
 
@@ -22,14 +23,16 @@ public class CustomScannerActivity extends AppCompatActivity {
     private Common common;
     private boolean isOn;
 
+    private BannerAdView mBanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_scanner);
 
-        BannerAdView mBanner = (BannerAdView) findViewById(R.id.adViewQR);
+        mBanner = (BannerAdView) findViewById(R.id.adViewQR);
         mBanner.setAdUnitId("R-M-2167912-2");
-        mBanner.setAdSize(AdSize.stickySize(AdSize.FULL_SCREEN.getWidth()));
+        mBanner.setAdSize(getAdSize());
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
 
@@ -43,6 +46,19 @@ public class CustomScannerActivity extends AppCompatActivity {
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
 
+    }
+
+    private BannerAdSize getAdSize() {
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        // Calculate the width of the ad, taking into account the padding in the ad container.
+        int adWidthPixels = mBanner.getWidth();
+        if (adWidthPixels == 0) {
+            // If the ad hasn't been laid out, default to the full screen width
+            adWidthPixels = displayMetrics.widthPixels;
+        }
+        final int adWidth = Math.round(adWidthPixels / displayMetrics.density);
+
+        return BannerAdSize.stickySize(this, adWidth);
     }
 
     @Override
