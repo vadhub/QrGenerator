@@ -12,6 +12,9 @@
     <string name="organization">Organization</string>
     <string name="email" translatable="false">Email</string>
     <string name="notes">Note</string>
+    
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
     <string name="enter_phone_number">Enter contact</string>
     <string name="enter_text">Enter text</string>
@@ -56,6 +59,16 @@
         <item>QR SMS</item>
         <item>QR Phone number</item>
     </string-array>
+
+    <string name="qr_scanner">QR Scanner</string>
+    <string name="qr_from_image">QR from image</string>
+    <string name="qr_contact">QR contact</string>
+    <string name="qr_text">QR text</string>
+    <string name="qr_location">QR Location</string>
+    <string name="qr_wi_fi">QR Wi-Fi</string>
+    <string name="qr_email">QR Email</string>
+    <string name="qr_sms">QR SMS</string>
+    <string name="qr_phone_number">QR Phone number</string>
 
     <string-array name="type">
         <item>WPA/WPA2</item>
