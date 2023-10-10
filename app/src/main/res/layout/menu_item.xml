@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:padding="16dp"
             android:src="@drawable/ic_baseline_contact_page_24"
-            app:tint="@color/black" />
+            app:tint="@color/blue_200" />
 
         <TextView
             android:id="@+id/menuTitle"
