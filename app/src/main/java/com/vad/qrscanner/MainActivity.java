@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         setSupportActionBar(toolbar);
 
         mBanner = (BannerAdView) findViewById(R.id.adView);
-        mBanner.setAdUnitId("R-M-1981935-1");
+        //demo-yandex
+        mBanner.setAdUnitId("R-M-2167912-1");
         mBanner.setAdSize(getAdSize());
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
