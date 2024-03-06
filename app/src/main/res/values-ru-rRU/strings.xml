@@ -18,6 +18,12 @@
     <string name="name">Имя</string>
     <string name="lastname">Фамилия</string>
     <string name="please_waiting">Пожалуйста подождите</string>
+    <string name="granted_permissions">Предоставленно</string>
+    <string name="permanently_denied_permissions">Разрешение отказано</string>
+    <string name="permissions_required">Требуются разрешения</string>
+    <string name="rationale_permissions">Обоснование</string>
+    <string name="request_again">Запросить еще раз</string>
+    <string name="action_settings">Настройки</string>
 
     <string name="access_location">Доступ к местоположению</string>
     <string name="permission_denied">В доступе отказано</string>

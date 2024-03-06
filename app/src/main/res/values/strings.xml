@@ -12,6 +12,12 @@
     <string name="organization">Organization</string>
     <string name="email" translatable="false">Email</string>
     <string name="notes">Note</string>
+    <string name="granted_permissions">Granted</string>
+    <string name="permanently_denied_permissions">Permanently denied</string>
+    <string name="permissions_required">Permissions required</string>
+    <string name="rationale_permissions">Rationale</string>
+    <string name="request_again">Request again</string>
+    <string name="action_settings">Settings</string>
 
     <string name="enter_phone_number">Enter contact</string>
     <string name="enter_text">Enter text</string>

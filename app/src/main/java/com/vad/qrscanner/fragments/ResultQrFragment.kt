@@ -2,10 +2,10 @@ package com.vad.qrscanner.fragments
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -15,25 +15,55 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.fondesa.kpermissions.PermissionStatus
+import com.fondesa.kpermissions.allGranted
+import com.fondesa.kpermissions.anyPermanentlyDenied
+import com.fondesa.kpermissions.anyShouldShowRationale
+import com.fondesa.kpermissions.extension.isPermissionGranted
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.request.PermissionRequest
 import com.vad.qrscanner.R
 import com.vad.qrscanner.domain.QRTools
 import com.vad.qrscanner.navigation.CustomAction
 import com.vad.qrscanner.navigation.HasCustomActions
 import com.vad.qrscanner.navigation.HasCustomTitle
 import com.vad.qrscanner.navigation.Navigator
+import com.vad.qrscanner.showGrantedToast
+import com.vad.qrscanner.showPermanentlyDeniedDialog
+import com.vad.qrscanner.showRationaleDialog
 import dev.sasikanth.colorsheet.ColorSheet
 
 
-class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
+class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions, PermissionRequest.Listener {
 
     private var bitmapQr: Bitmap? = null
     private var text: String? = null
 
     private lateinit var imageViewQr: ImageView
     private lateinit var textViewResult: TextView
+
+    private val request by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionsBuilder(Manifest.permission.READ_MEDIA_IMAGES).build()
+        } else {
+            permissionsBuilder(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE).build()
+        }
+    }
+
+    private val isPermissionGranted by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireContext().isPermissionGranted(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requireContext().isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                    requireContext().isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        request.addListener(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +82,6 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
 
         text = arguments?.getString("result_text") ?: ""
         bitmapQr = QRTools.generate(text)
-
-        
 
         val res = resources.getStringArray(R.array.colors)
         val colors = IntArray(res.size)
@@ -79,10 +107,10 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
     override fun setCustomAction(navigator: Navigator): List<CustomAction> {
         val listAction = mutableListOf<CustomAction>()
         val saveAction = CustomAction(R.drawable.ic_baseline_save_24) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (isPermissionGranted) {
                 saveImage(bitmapQr!!)
             } else {
-                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                request.send()
             }
         }
 
@@ -107,17 +135,6 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
         return listAction
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                saveImage(bitmapQr!!)
-            } else {
-                Toast.makeText(context, "Permission not granted", Toast.LENGTH_SHORT).show()
-            }
-        }
-
     private fun saveImage(bitmap: Bitmap) {
         MediaStore.Images.Media.insertImage(
             context?.contentResolver,
@@ -128,4 +145,14 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions {
     }
 
     override fun getTitle() = R.string.fragment_result_qr
+    override fun onPermissionsResult(result: List<PermissionStatus>) {
+        when {
+            result.anyPermanentlyDenied() -> requireContext().showPermanentlyDeniedDialog()
+            result.anyShouldShowRationale() ->  requireContext().showRationaleDialog(request)
+            result.allGranted() -> {
+                saveImage(bitmapQr!!)
+                requireContext().showGrantedToast()
+            }
+        }
+    }
 }
