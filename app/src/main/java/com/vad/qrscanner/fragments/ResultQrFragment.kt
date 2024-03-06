@@ -23,6 +23,7 @@ import com.fondesa.kpermissions.anyShouldShowRationale
 import com.fondesa.kpermissions.extension.isPermissionGranted
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.request.PermissionRequest
+import com.vad.qrscanner.MainActivity
 import com.vad.qrscanner.R
 import com.vad.qrscanner.domain.QRTools
 import com.vad.qrscanner.navigation.CustomAction
@@ -142,6 +143,8 @@ class ResultQrFragment : Fragment(), HasCustomTitle, HasCustomActions, Permissio
         )
 
         Toast.makeText(context, getString(R.string.save_to) + "Gallery", Toast.LENGTH_LONG).show()
+
+        (activity as MainActivity).showAd()
     }
 
     override fun getTitle() = R.string.fragment_result_qr

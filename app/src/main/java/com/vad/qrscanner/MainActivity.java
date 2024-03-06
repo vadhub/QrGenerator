@@ -34,7 +34,15 @@ import com.vad.qrscanner.navigation.HasCustomTitle;
 import com.vad.qrscanner.navigation.Navigator;
 import com.yandex.mobile.ads.banner.BannerAdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdError;
 import com.yandex.mobile.ads.common.AdRequest;
+import com.yandex.mobile.ads.common.AdRequestConfiguration;
+import com.yandex.mobile.ads.common.AdRequestError;
+import com.yandex.mobile.ads.common.ImpressionData;
+import com.yandex.mobile.ads.interstitial.InterstitialAd;
+import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener;
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoader;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements Navigator {
 
     private Toolbar toolbar;
     private BannerAdView mBanner;
+    @Nullable
+    private InterstitialAd mInterstitialAd = null;
+    @Nullable
+    private InterstitialAdLoader mInterstitialAdLoader = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +71,22 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         mBanner.setAdSize(getAdSize());
         AdRequest adRequest = new AdRequest.Builder().build();
         mBanner.loadAd(adRequest);
+
+        mInterstitialAdLoader = new InterstitialAdLoader(this);
+        mInterstitialAdLoader.setAdLoadListener(new InterstitialAdLoadListener() {
+            @Override
+            public void onAdLoaded(@NonNull final InterstitialAd interstitialAd) {
+                mInterstitialAd = interstitialAd;
+                // The ad was loaded successfully. Now you can show loaded ad.
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull final AdRequestError adRequestError) {
+                // Ad failed to load with AdRequestError.
+                // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+            }
+        });
+        loadInterstitialAd();
 
         Common common = Common.getInstance();
         common.mGetContent = mGetContent;
@@ -177,6 +205,70 @@ public class MainActivity extends AppCompatActivity implements Navigator {
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void loadInterstitialAd() {
+        if (mInterstitialAdLoader != null ) {
+            final AdRequestConfiguration adRequestConfiguration =
+                    new AdRequestConfiguration.Builder("R-M-2167912-3").build();
+            mInterstitialAdLoader.loadAd(adRequestConfiguration);
+        }
+    }
+
+    public void showAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.setAdEventListener(new InterstitialAdEventListener() {
+                @Override
+                public void onAdShown() {
+                    // Called when ad is shown.
+                }
+
+                @Override
+                public void onAdFailedToShow(@NonNull final AdError adError) {
+                    // Called when an InterstitialAd failed to show.
+                }
+
+                @Override
+                public void onAdDismissed() {
+                    // Called when ad is dismissed.
+                    // Clean resources after Ad dismissed
+                    if (mInterstitialAd != null) {
+                        destroyInterstitialAd();
+                    }
+
+                    // Now you can preload the next interstitial ad.
+                    loadInterstitialAd();
+                }
+
+                @Override
+                public void onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                }
+
+                @Override
+                public void onAdImpression(@Nullable final ImpressionData impressionData) {
+                    // Called when an impression is recorded for an ad.
+                }
+            });
+            mInterstitialAd.show(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mInterstitialAdLoader != null) {
+            mInterstitialAdLoader.setAdLoadListener(null);
+            mInterstitialAdLoader = null;
+        }
+        destroyInterstitialAd();
+    }
+
+    private void destroyInterstitialAd() {
+        if (mInterstitialAd != null) {
+            mInterstitialAd.setAdEventListener(null);
+            mInterstitialAd = null;
         }
     }
 

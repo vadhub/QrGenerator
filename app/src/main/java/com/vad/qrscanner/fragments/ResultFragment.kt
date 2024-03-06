@@ -16,7 +16,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import com.vad.qrscanner.R
 import com.vad.qrscanner.domain.CheckLink
 import com.vad.qrscanner.navigation.HasCustomTitle
@@ -40,7 +39,6 @@ class ResultFragment : Fragment(), HasCustomTitle {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         val sharedPreferences = thisContext.getSharedPreferences("com.vad.qscanner", Context.MODE_PRIVATE)
 

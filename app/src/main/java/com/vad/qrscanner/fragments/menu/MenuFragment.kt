@@ -19,6 +19,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.vad.qrscanner.Common
 import com.vad.qrscanner.CustomScannerActivity
+import com.vad.qrscanner.MainActivity
 import com.vad.qrscanner.R
 import com.vad.qrscanner.fragments.*
 import com.vad.qrscanner.navigation.HasCustomTitle
@@ -127,6 +128,7 @@ class MenuFragment : Fragment(), HasCustomTitle {
         scanOptions.setBarcodeImageEnabled(true)
         scanOptions.captureActivity = CustomScannerActivity::class.java
         barcodeLauncher.launch(scanOptions)
+        (activity as MainActivity).showAd()
     }
 
     private fun startResult(scanIntentResult: ScanIntentResult) {
